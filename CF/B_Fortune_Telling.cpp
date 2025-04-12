@@ -15,7 +15,7 @@ using namespace std;
 
 
 void solve(){
-    int
+    int n;
     cout << nl;
 }
 
