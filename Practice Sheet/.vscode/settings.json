@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "iostream": "cpp",
+    "random": "cpp",
+    "ostream": "cpp",
+    "xiosbase": "cpp",
+    "algorithm": "cpp",
+    "iterator": "cpp",
+    "xhash": "cpp",
+    "xutility": "cpp"
+  }
+}
