@@ -17,19 +17,34 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    int a[n];
-    inp(a)
-    // int sm = accumulate(a,a+n,0LL);
-    map<int,int> mp;
 
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < 31; j++){
-            mp[j] += ((1LL << j) == ((1LL << j) & a[i]));
-        }
+    set<int> st;
+    for(int i = 1; i <= 2*n; i++){
+        st.insert(i);
     }
 
-    for(auto &[a,b] : mp) cout << a << " " << b << nl;
-    // cout << ;
+    vector<int> sol(2*n,-1);
+    int a[n][n];
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            cin >> a[i][j];
+            // cout << a[i][j] << " ";
+            // cout << i+j+2-1 << " ";
+            sol[i+j + 2 - 1] = a[i][j];
+            st.erase(a[i][j]);
+        }
+        // cout << nl;
+    }
+
+    // for(auto &i : st) cout << i << " ";
+    // cout << 
+
+    for(int i = 0; i < n; i++){
+        if(sol[i] == -1) sol[i] = *st.begin();
+    }
+
+    for(auto &i : sol) cout << i << " ";
+    
     cout << nl;
 }
 

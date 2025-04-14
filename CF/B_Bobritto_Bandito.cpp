@@ -15,21 +15,14 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    int a[n];
-    inp(a)
-    // int sm = accumulate(a,a+n,0LL);
-    map<int,int> mp;
-
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < 31; j++){
-            mp[j] += ((1LL << j) == ((1LL << j) & a[i]));
-        }
-    }
-
-    for(auto &[a,b] : mp) cout << a << " " << b << nl;
-    // cout << ;
+    int n, m, l, r;
+    cin >> n >> m >> l >> r;
+    int x = 0, y = 0;
+    
+    y = min(r,m);
+    m -= y;
+    x -= m;
+    cout << x << " " << y;
     cout << nl;
 }
 

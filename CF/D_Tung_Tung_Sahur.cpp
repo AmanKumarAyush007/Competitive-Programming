@@ -15,21 +15,45 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    int a[n];
-    inp(a)
-    // int sm = accumulate(a,a+n,0LL);
-    map<int,int> mp;
 
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < 31; j++){
-            mp[j] += ((1LL << j) == ((1LL << j) & a[i]));
+    string p,s;
+    cin >> p >> s;
+    int n = p.size();
+    
+    int i = 0;
+    int j = 0;
+
+    int pc = 0;
+    int sc = 0;
+    char c;
+    while(i < n){
+        c = p[i];
+        pc = 1;
+        i++;
+        while(i < n && p[i] == c) {
+            pc++;
+            i++; 
         }
+
+        while(j < s.size() && s[j] == c) {
+            sc++;
+            j++;
+        }
+
+        if(sc < pc || sc > 2*pc){
+            cout << "NO\n";
+            return;
+        }
+        pc = 0;
+        sc = 0;
     }
 
-    for(auto &[a,b] : mp) cout << a << " " << b << nl;
-    // cout << ;
+
+    if (j != s.size()) {
+        cout << "NO\n";
+    }
+    else cout << "YES";
+
     cout << nl;
 }
 

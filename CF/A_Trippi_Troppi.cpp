@@ -15,21 +15,9 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    int a[n];
-    inp(a)
-    // int sm = accumulate(a,a+n,0LL);
-    map<int,int> mp;
-
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < 31; j++){
-            mp[j] += ((1LL << j) == ((1LL << j) & a[i]));
-        }
-    }
-
-    for(auto &[a,b] : mp) cout << a << " " << b << nl;
-    // cout << ;
+    string a,b,c;
+    cin >> a >> b >> c;
+    cout << a[0] << b[0] << c[0];
     cout << nl;
 }
 
