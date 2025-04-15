@@ -20,14 +20,32 @@ void solve(){
     int a[n];
     inp(a)
 
+    vector<int> bit(32,0);
+
     for(int i = 0; i < n; i++){
-        int sum = 0;
-        for(int j = 0; j < n; j++){
-            sum += a[i] ^ a[j];
+        for(int j = 0; j < 32; j++){
+            if((1LL << j) & a[i]) bit[j]++;
         }
-        cout << a[i] << " " << sum << nl;
     }
-    cout << nl;
+
+    int ans = 0;
+
+    for(int i = 0; i < n; i++){
+        vector<int> temp = bit;
+
+        for(int j = 0; j < 32; j++){
+            if((1LL << j) & a[i]) temp[j] = n - temp[j];
+        }
+
+        int sum = 0;
+        for(int j = 0; j < 32; j++){
+            sum += temp[j] * (1LL << j);
+        }
+
+        ans = max(ans,sum);
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){
