@@ -15,8 +15,14 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n,x,y;
+    cin >> n >> x >> y;
+    int a[n];
+    inp(a)
+
+    int sum = accumulate(a,a+n,0LL);
+    cout << ((((sum + x) % 2) == (y % 2)) ? "Alice" : "Bob");
+
     cout << nl;
 }
 
