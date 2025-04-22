@@ -15,32 +15,28 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n,k;
+    cin >> n >> k;
+    int a[n],b[n];
+    inp(a)
+    inp(b)
 
-    set<int> st;
-    for(int i = 1; i <= 2*n; i++){
-        st.insert(i);
-    }
-
-    vector<int> sol(2*n,-1);
-    int a[n][n];
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            cin >> a[i][j];
-            sol[i+j + 2 - 1] = a[i][j];
-            st.erase(a[i][j]);
-        }
-    }
-
+    int c[n];
+    int ans = 0;
 
     for(int i = 0; i < n; i++){
-        if(sol[i] == -1) sol[i] = *st.begin();
+        c[i] = min(a[i],b[i]);
+        ans += max(a[i],b[i]);
+    }
+    sort(c,c+n,greater<int>());
+
+    for(int i = 0; i < n && i < k-1; i++){
+        ans += c[i];
     }
 
-    for(auto &i : sol) cout << i << " ";
-    
-    cout << nl;
+    ans++;
+
+    cout << ans << nl;
 }
 
 signed main(){

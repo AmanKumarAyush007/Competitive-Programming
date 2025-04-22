@@ -17,29 +17,25 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+    int a[n];
+    inp(a)
 
-    set<int> st;
-    for(int i = 1; i <= 2*n; i++){
-        st.insert(i);
-    }
+    int sum = accumulate(a,a+n,0LL);
 
-    vector<int> sol(2*n,-1);
-    int a[n][n];
+    map<int,int> mp;
+
+    for(auto &i : a) mp[i]++;
+
+    vector<int> sol;
+
     for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            cin >> a[i][j];
-            sol[i+j + 2 - 1] = a[i][j];
-            st.erase(a[i][j]);
+        if(((sum - a[i])%2 == 0) && mp.find((sum - a[i])/2) != mp.end()){
+            if((mp[(sum-a[i])/2] >= 2) || (a[i] != ((sum-a[i])/2)) )  sol.pb(i+1);
         }
     }
-
-
-    for(int i = 0; i < n; i++){
-        if(sol[i] == -1) sol[i] = *st.begin();
-    }
-
-    for(auto &i : sol) cout << i << " ";
     
+    cout << sol.size() << nl;
+    for(auto &i : sol) cout << i << " ";
     cout << nl;
 }
 
@@ -48,7 +44,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while(t--){
         solve();
     }

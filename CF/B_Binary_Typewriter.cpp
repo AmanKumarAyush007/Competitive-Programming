@@ -17,29 +17,32 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+    string s;
+    cin >> s;
 
-    set<int> st;
-    for(int i = 1; i <= 2*n; i++){
-        st.insert(i);
+    int val = ((s[0] == '0') ? 1 : 2);
+
+    for(int i = 1; i < n; i++){
+        if(s[i] == s[i-1]) val++;
+        else val += 2;
     }
 
-    vector<int> sol(2*n,-1);
-    int a[n][n];
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            cin >> a[i][j];
-            sol[i+j + 2 - 1] = a[i][j];
-            st.erase(a[i][j]);
-        }
+    int x = 0, y = 0, z = 0;
+
+    while(x < n && s[x] != '1') x++;
+    y = x;
+    while(y < n && s[y] != '0') y++;
+    z = y;
+    while(z < n && s[z] != '1') z++;
+
+    if(x < n){
+        if(y < n){
+            if(z < n) val -= 2;
+            else val--;
+        }        
     }
-
-
-    for(int i = 0; i < n; i++){
-        if(sol[i] == -1) sol[i] = *st.begin();
-    }
-
-    for(auto &i : sol) cout << i << " ";
     
+    cout << val;
     cout << nl;
 }
 

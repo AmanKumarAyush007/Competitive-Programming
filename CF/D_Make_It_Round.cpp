@@ -13,33 +13,26 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
+int zer(int n){
+    int cnt = 0;
+    while(n % 10 == 0){
+        cnt++;
+        n /= 10;
+    }
+    return cnt;
+}
+
 
 void solve(){
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
 
-    set<int> st;
-    for(int i = 1; i <= 2*n; i++){
-        st.insert(i);
-    }
-
-    vector<int> sol(2*n,-1);
-    int a[n][n];
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            cin >> a[i][j];
-            sol[i+j + 2 - 1] = a[i][j];
-            st.erase(a[i][j]);
-        }
-    }
-
-
-    for(int i = 0; i < n; i++){
-        if(sol[i] == -1) sol[i] = *st.begin();
-    }
-
-    for(auto &i : sol) cout << i << " ";
+    pair<int,int> ans = {0,0};
     
+    for(int i = 1; i <= k; i++){
+        if(zer(n*i) >= ans.ff) ans = {zer(n*i),n*i};
+    }
+    cout << ans.ss;
     cout << nl;
 }
 
