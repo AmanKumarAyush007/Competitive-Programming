@@ -15,39 +15,23 @@ using namespace std;
 
 
 void solve(){
-    int n,m;
-    cin >> n >> m;
-    int n0 = n;
+    int n,k;
+    cin >> n >> k;
+    int a[n];
+    inp(a)
 
-    int cnt2 = 0, cnt5 = 0, k = 1;
+    map<int,int> mp;
 
-    while(n > 0 && n % 2 == 0) {
-        n /= 2;
-        cnt2++;
-    }
-    while(n > 0 && n % 5 == 0) {
-        n /= 5;
-        cnt5++;
-    }
+    set<int> st;
 
-
-    while(cnt2 < cnt5 && k*2 <= m){
-        cnt2++;
-        k *= 2;
+    for(auto &i : a){
+        if(i % k == 0) continue;
+        mp[i%k]++;
+        st.insert((k*mp[i%k]) - (i%k));
     }
 
-    while(cnt5 < cnt2 && k*5 <= m){
-        cnt5++;
-        k *= 5;
-    }
-
-    while(10*k <= m) k *= 10;
-
-    if(k == 1) cout << n0*m;
-    else {
-        k = m/k * k;
-        cout << n0*k;        
-    }
+    if(st.empty()) cout << 0;
+    else cout << *st.rbegin() + 1;   
 
     cout << nl;
 }
