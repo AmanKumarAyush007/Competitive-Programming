@@ -13,20 +13,23 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
-int isPrime(int n){
-    if(n <= 1) return 1;
-    if(n == 2 || n == 3) return n;
-
-    for(int i = 2; i <= sqrt(n); i++){
-        if(n%i == 0) return i;
-    }
-    return n;
-}
 
 void solve(){
     int n;
     cin >> n;
-    cout << isPrime(n);
+    int a[n];
+    inp(a);
+    map<int,int> mp;
+
+    for(int i = 0; i < n; i++){
+        mp[a[i] - (i+1)] += a[i];
+    }
+
+    int mx = hell;
+
+    for(auto &[a,b] : mp) mx = max(b,mx);
+
+    cout << mx;
     cout << nl;
 }
 

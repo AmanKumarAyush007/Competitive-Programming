@@ -13,21 +13,20 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
-int isPrime(int n){
-    if(n <= 1) return 1;
-    if(n == 2 || n == 3) return n;
-
-    for(int i = 2; i <= sqrt(n); i++){
-        if(n%i == 0) return i;
-    }
-    return n;
-}
-
 void solve(){
-    int n;
-    cin >> n;
-    cout << isPrime(n);
-    cout << nl;
+    int n,k;
+    cin >> n >> k;
+
+    int ans = n;
+    
+    for(int i = 1; i*i <= n; i++){
+        if(n%i == 0){
+            if(i <= k) ans = min(ans,n/i);
+            if(n/i <= k) ans = min(ans,i);
+        }
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){
@@ -35,7 +34,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while(t--){
         solve();
     }
