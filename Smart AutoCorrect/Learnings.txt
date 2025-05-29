@@ -1,0 +1,5 @@
+Learnings:
+
+1. 	A non-zero return value (like 1) typically indicates that the program encountered an error or exceptional 	condition during its execution. This is a standard way to signal to scripts or other programs that might be 	running your executable that something went wrong.
+
+

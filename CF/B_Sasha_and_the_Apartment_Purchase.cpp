@@ -19,13 +19,38 @@ void solve(){
     cin >> n >> k;
     int a[n];
     inp(a)
-    for(int i = 1; i <= 13; i++){
+
+
+    int mn = *min_element(a,a+n);
+    int mx = *max_element(a,a+n);
+
+
+    for(int i = mn; i <= mx; i++){
         int ans = 0;
+        vector<int> v;
         for(int j = 0; j < n; j++){
-            ans +=abs(i-a[j]);
-        }   
-        cout << i << " " << ans << nl;
+            v.pb(abs(i - a[j]));
+        }
+       ans += accumulate(all(v),0LL);
+       sort(all(v));
+       int mn = v[0];
+       map<int,int> mp;
+       for(int j = 0; j < v.size(); j++){
+           mp[mn]++;
+       }
+       cout << mp[mn] << nl;
+
+
+        // cout << "ansPre -> " << ans << nl;
+        // cout << i << " -> ";
+    //    for(int j = 1; j <= k; j++){
+    //        ans -= v[n-j];
+    //     //    cout << v[n-j];
+    //    }
+        // cout << ans << "\n" ;
+        // cout << "ansPost -> " << ans << nl;
     }
+
     cout << nl;
 }
 
