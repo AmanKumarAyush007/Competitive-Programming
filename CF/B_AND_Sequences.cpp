@@ -72,7 +72,6 @@ void solve(){
         mp[ele]++;
     }
     int AND = v[0];
-
     for(int i = 1; i < n; i++){
         AND &= v[i];
     }

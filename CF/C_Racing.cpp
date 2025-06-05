@@ -15,38 +15,62 @@ using namespace std;
 
 
 
-bool check (vector<bool> &dp,<pair<int,int>> &vp, vector<int> &v, int i){
-    int l = vp[i].ff;
-    int r = vp[i].ss;
-
-    if(i == 0){
-        if(v[i] == -1) dp[i] = ((l <= 0 && 0 <= r) || (l <= 1 && 1 <= r));
-        else dp[i] = ((l <= v[i] && v[i] <= r) || (l <= v[i] && v[i] <= r));
-
-        return dp[i];
-    }
-
-    
-
-}
-
-
 void solve(){
     int n;
     cin >> n;
     vector<int> v(n);
     inp(v)
 
-    vector<pair<int,int>> vp;
-
+    vector<pair<int,int>> vp,valid;
+    
     for(int i = 0; i < n; i++){
         int x,y;
         cin >> x >> y;
-        vp.push_back({x,y});
+        vp.pb({x,y});
     }
 
 
-    
+    int l = 0, r = 0;
+    for(int i = 0; i < n; i++){
+        int x = vp[i].ff, y = vp[i].ss;
+
+        if(v[i] == -1)r++;
+        else if(v[i] == 1)l++,r++;
+
+        l = max(x,l);
+        r = min(y,r);
+
+        if(r < l){
+            cout << -1 << nl;
+            return;
+        }
+
+        valid.pb({l,r});
+    }
+
+    int st = valid[n-1].ss;
+
+    for(int i = n-1; i >= 0; i--){
+        if(v[i] == 1) st--;
+        else if(v[i] == -1){
+            if(i == 0){
+                if(st >= 0 && st <= 0) v[i] = 0;
+                else {
+                    st--;
+                    v[i] = 1;
+                }
+                continue;
+            }
+            if(st >= valid[i-1].ff && st <= valid[i-1].ss) v[i] = 0;
+            else {
+                st--;
+                v[i] = 1;
+            }
+        }
+    }
+
+    for(auto &i : v) cout << i << " ";
+
     cout << nl;
 }
 

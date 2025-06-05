@@ -17,20 +17,59 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> a(n);
-    for(auto &x : a) cin >> x;
+    int a[n];
+    inp(a)
+    stack<int> s,t;
+    s.push(-1);
+    t.push(-1);
 
-    vector<int> dp(n+1, inf);
-    dp[0] = 0;
-
-    int lis = 0;
-    for (int x : a) {
-        int pos = lower_bound(dp.begin(), dp.end(), x) - dp.begin();
-        dp[pos] = x;
-        lis = max(lis, pos);
+    for(int i = n-1; i >= 0; i--){
+        if((s.top() <= a[i]) && (t.top() <= a[i])){
+            if(s.top() > t.top()) s.push(a[i]);
+            else if(s.top() < t.top()) t.push(a[i]);
+            else {
+                (s.size() >= t.size()) ? s.push(a[i]) : t.push(a[i]);
+            }
+        }
+        else if(s.top() <= a[i]) s.push(a[i]);
+        else if(t.top() <= a[i]) t.push(a[i]);
+        else{
+            if(s.top() > t.top()) s.push(a[i]);
+            else if(s.top() < t.top()) t.push(a[i]);
+            else {
+                (s.size() >= t.size()) ? s.push(a[i]) : t.push(a[i]);
+            }
+        }
     }
 
-    int ans = max(0LL, lis - 2);
+    vector<int> p,q;
+    while(s.top() != -1){
+        int x = s.top();
+        s.pop();
+        p.pb(x);
+    }
+    while(t.top() != -1){
+
+        int x = t.top();
+        t.pop();
+        q.pb(x);
+    }
+
+    int ans = 0;
+
+    if(p.size() >= 2){
+        for(int i = 0; i < (p.size())-1; i++){
+            if(p[i] < p[i+1]) ans++;
+        }
+
+    }
+    if(q.size() >= 2){
+        for(int i = 0; i < (q.size())-1; i++){
+            if(q[i] < q[i+1]) ans++;
+        }
+
+    }
+
     cout << ans << nl;
 }
 
