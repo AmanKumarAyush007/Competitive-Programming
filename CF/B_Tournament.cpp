@@ -15,26 +15,23 @@ using namespace std;
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
+    int n,j,k;
+    cin >> n >> j >> k;
+    vector<int> v(n);
+    inp(v)
 
-    vector<int> a(n);
-    inp(a)
-    
-    sort(all(a));
-    int ans = 0;
+    int y = v[j-1];
 
-    multiset<int> s;
+    int x = *max_element(all(v));
 
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
-        }
+    if(k == 1){
+        if(x == y) cout << "YES" << nl;
+        else cout << "NO\n";
+    } 
+    else{
+        cout << "YES\n";
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
-
-    cout << ans << nl;
 }
 
 signed main(){

@@ -15,26 +15,44 @@ using namespace std;
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
-
+    int n;
+    cin >> n;
     vector<int> a(n);
     inp(a)
+
+    vector<int> b = a;
     
-    sort(all(a));
-    int ans = 0;
 
-    multiset<int> s;
+    for(int i = 1; i < n; i++){
+        a[i] += a[i-1];
+    }
 
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
+    int cnt = 0;
+    int ck = -1;
+
+    for(int i = 0; i < n-1; i++){
+        if(a[i] % 3 == 0){
+             cnt++;
+             ck = i;
+        }
+        if(cnt > 1) {
+            cout << "No\n";
+            return;
+        }
+    }
+    int sum = 0;
+    for(int i = ck+1; i >= 0; i--){
+        sum += b[i];
+        if(sum % 3 == 0) {
+            cout << "No\n";
+            return;
         }
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
 
-    cout << ans << nl;
+
+    if(a[n-1] % 3 == 0) cout << "No" << nl;
+    else cout <<"Yes" << nl;
 }
 
 signed main(){

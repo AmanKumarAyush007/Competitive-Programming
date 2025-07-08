@@ -18,23 +18,13 @@ void solve(){
     int n,k;
     cin >> n >> k;
 
-    vector<int> a(n);
-    inp(a)
-    
-    sort(all(a));
-    int ans = 0;
+    string s;
+    cin >> s;
 
-    multiset<int> s;
+    int cnt = count(all(s),'1');
 
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
-        }
-    }
-
-    ans += *s.rbegin() - *s.begin() + 1;
-
-    cout << ans << nl;
+    cout << ((2*k > n || cnt <= k) ?  "Alice" : "Bob");
+    cout << nl;
 }
 
 signed main(){

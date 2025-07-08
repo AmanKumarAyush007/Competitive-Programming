@@ -13,46 +13,53 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
-bool check(int x, vector<int>& v){
-    int n = v.size();
-
-    int i = 0;
-
-    while(i <= n-x){
-        if(v[i] + v[i+1] > v[i+x-1]){
-            return true;
-        }
-        i++;
-    }
-
-    return false;
-}
-
 
 void solve(){
     int n;
     cin >> n;
+
     vector<int> v(n);
     inp(v)
 
-    sort(all(v));
+    map<int,int> mp;
 
-    int ans = n-2;
+    for(auto &i : v) mp[i]++;
 
-    int lo = 3;
-    int hi = n;
 
-    while(lo <= hi){
-        int mid = (lo + hi) / 2;
+    vector<pair<int,int>> vp;
 
-        if(check(mid,v)){
-            ans = min(ans,n-mid);
-            lo = mid + 1;
+    int rest = 0;
+    int curr = 0;
+
+    for(int i = 0; i <= n; i++){
+        vp.push_back({mp[i],n-curr+rest});
+        if(mp[i]==0){
+            break;
         }
-        else hi = mid - 1;
+        rest += mp[i]-1;
+        curr += mp[i];
+
     }
 
-    cout << ans << nl;
+
+    vector<int> tot(n+2,0);
+
+    for(int i = 0; i < vp.size(); i++){
+        int st = vp[i].ff, en = vp[i].ss;
+        tot[st]++;
+        tot[en+1]--;
+    }
+
+    for(int i = 1; i < n+1; i++){
+        tot[i] += tot[i-1];
+    }
+
+    for(int i = 0; i < n+1; i++){
+        cout << tot[i] << " ";
+    }
+
+
+    cout << nl;
 }
 
 signed main(){

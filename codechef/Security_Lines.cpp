@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define int        int64_t
+#define int        long long
 #define ff         first
 #define ss         second
 #define pb         push_back
@@ -15,26 +15,20 @@ using namespace std;
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
-
-    vector<int> a(n);
+    int n;
+    cin >> n;
+    int a[n];
     inp(a)
-    
-    sort(all(a));
-    int ans = 0;
 
-    multiset<int> s;
-
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
-        }
+    for(int i = 1; i < n; i++){
+        a[i]++;
+        a[i] = i + max(0LL,a[i]-i); 
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
+    // for(auto &i : a) cout << i << " ";
 
-    cout << ans << nl;
+    cout << *min_element(a,a+n);
+    cout << nl;
 }
 
 signed main(){

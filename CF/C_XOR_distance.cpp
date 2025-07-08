@@ -15,26 +15,32 @@ using namespace std;
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
+    int n,m, k;
+    cin >> n >> m >> k;
 
-    vector<int> a(n);
-    inp(a)
-    
-    sort(all(a));
-    int ans = 0;
+    if(n == m) cout << 0 ;
+    else{
+        if(n < m) swap(n,m);
 
-    multiset<int> s;
+        int ind = -1;
+        int x = 0, cnt = 0;
 
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
+        for(int i = 63; i >= 0; i--){
+            if(((1LL << i) & n) > ((1LL << i) & m)) {
+                cnt++;
+                if(ind == -1) ind = i;
+                else{
+                    if((x|(1LL << i) )<= k) {
+                        x |= (1LL << i);
+                    }
+                }
+                
+            }
         }
+        cout << ((cnt == 1) ? n-m : abs((n^x )-(m^x )));
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
-
-    cout << ans << nl;
+    cout << nl;
 }
 
 signed main(){

@@ -13,33 +13,38 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
+int f(int n, int m){
+    string s = to_string(n);
+    string t = to_string(m);
+    int ans = 0;
+    int i = s.size()-1;
+
+    while(i >= 0 ){
+        if(s[i] == t[i]){
+            ans++;
+            // cout << i << s[i] << t[i] << nl;
+        }
+        i--;
+    }
+    return ans;
+}
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
+    int l,r;
+    cin >> l >> r;
 
-    vector<int> a(n);
-    inp(a)
-    
-    sort(all(a));
-    int ans = 0;
-
-    multiset<int> s;
-
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
-        }
+    for(int i = l; i <= r; i++){
+        cout << i << " " << f(l,i) + f(i,r) << nl;
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
-
-    cout << ans << nl;
+    cout << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+    // cout << f(101,1000);
 
     int t = 1;
     cin >> t;

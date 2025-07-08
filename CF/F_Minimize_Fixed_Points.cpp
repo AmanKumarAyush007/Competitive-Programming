@@ -13,15 +13,45 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
+vector<int> pre(1e5 + 5);
+
+void precompute(){
+
+    for(int i = pre.size() - 1; i >= 1; i--){
+        pre[i] = i;
+        for(int j = 2; (j*j)<= i; j++){
+            if(i % j == 0) {
+                pre[i] = i/j;
+                break;
+            }
+        }
+    }    
+}
+
 
 void solve(){
-    cout << 63 - __builtin_clzll(0);
+    int n;
+    cin >> n;
+    vector<int> v(n+1);
+    for(int i = 1; i <= n; i++){
+        v[i] = i;
+    }
+    for(int i = n; i >= 1; i--){
+        int div = pre[i];
+        if(div != i) swap(v[i],v[div]);       
+    }
+    
+    for(int i = 1; i <= n; i++){
+        cout << v[i] << " ";
+    }
     cout << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+    precompute();
 
     int t = 1;
     cin >> t;

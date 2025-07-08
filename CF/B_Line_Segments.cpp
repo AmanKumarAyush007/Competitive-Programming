@@ -9,32 +9,43 @@ using namespace std;
 #define hell       LLONG_MIN
 #define nl         '\n'
 #define all(a)     (a).begin(),(a).end()
+#define rall(a)    (a).rbegin(),(a).rend()
 #define sm(v)      accumulate(all(v),0LL)
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
+    int px,py,qx,qy;
+    cin >> px >> py >> qx >> qy;
+    vector<double> v(n);
+    inp(v)
 
-    vector<int> a(n);
-    inp(a)
     
-    sort(all(a));
-    int ans = 0;
+    double dis = sqrt(((px - qx) * (px - qx))+( (py - qy) * (py - qy)));
 
-    multiset<int> s;
 
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
-        }
+    if(n == 1){
+        if(dis == v[0]) cout << "Yes\n";
+        else cout << "No\n";
+        return;
     }
+    
+    v.resize(n+1);
+    v[n] = dis;
+    sort(rall(v));
 
-    ans += *s.rbegin() - *s.begin() + 1;
+    
+    double sum = 0;
+    for(auto &i : v) sum += i;
+    
 
-    cout << ans << nl;
+    if(v[0] <= sum - v[0]) cout << "Yes";
+    else cout << "No";
+
+    cout << nl;
 }
 
 signed main(){

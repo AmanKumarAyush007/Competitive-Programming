@@ -15,25 +15,30 @@ using namespace std;
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
-
-    vector<int> a(n);
-    inp(a)
-    
-    sort(all(a));
-    int ans = 0;
-
-    multiset<int> s;
-
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
-        }
+    int n;
+    cin >> n;
+    vector<int> v(n+1);
+    for(int i = 1; i <= n; i++){
+        cin >> v[i];
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
+    set<int> st;
+    for(auto &i : v) st.insert(i);
 
+    int ans = 0;
+
+    for(int i = 1; i <= n; i++){
+        if(st.find(i) != st.end()){
+            int j = i;
+            int cnt = 1;
+            while(v[j] != i){
+                cnt++;
+                j = v[j];
+                st.erase(j);
+            }
+            if(cnt > 2) ans += ceil(1.0*cnt/2) - 1;
+        }
+    }
     cout << ans << nl;
 }
 

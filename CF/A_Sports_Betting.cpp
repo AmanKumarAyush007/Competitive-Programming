@@ -15,26 +15,32 @@ using namespace std;
 
 
 void solve(){
-    int n,k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    inp(v)
 
-    vector<int> a(n);
-    inp(a)
-    
-    sort(all(a));
-    int ans = 0;
+    map<int,int> mp;
+    for(auto &i : v) mp[i]++;
 
-    multiset<int> s;
-
-    for(int i = 0; i < n; i++){
-        if(abs(i - (n - 1 - i)) <= k+1) {
-            s.insert(a[i]);
+    for(auto &[a,b] : mp){
+        if(b >= 4){
+            cout << "Yes\n";
+            return; 
+        }
+        if(b >= 2){
+            int i = a+1;
+            while(mp.find(i) != mp.end()){
+                if(mp[i] >= 2){
+                    cout << "Yes\n";
+                    return;
+                }
+                i++;
+            }
         }
     }
 
-    ans += *s.rbegin() - *s.begin() + 1;
-
-    cout << ans << nl;
+    cout << "No" << nl;
 }
 
 signed main(){

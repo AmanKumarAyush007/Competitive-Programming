@@ -13,21 +13,6 @@ using namespace std;
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
 
-bool check(int x, vector<int>& v){
-    int n = v.size();
-
-    int i = 0;
-
-    while(i <= n-x){
-        if(v[i] + v[i+1] > v[i+x-1]){
-            return true;
-        }
-        i++;
-    }
-
-    return false;
-}
-
 
 void solve(){
     int n;
@@ -35,21 +20,36 @@ void solve(){
     vector<int> v(n);
     inp(v)
 
-    sort(all(v));
+    vector<int> pre_min(n), pre_min_sum(n);
+    pre_min[0] = v[0];
+    pre_min_sum[0] = v[0];
 
-    int ans = n-2;
+    for(int i = 1; i < n; i++){
+        pre_min[i] = min(v[i],pre_min[i-1]);
+        pre_min_sum[i] = pre_min[i] + pre_min_sum[i-1];
+    }
 
-    int lo = 3;
-    int hi = n;
 
-    while(lo <= hi){
-        int mid = (lo + hi) / 2;
+    if(n == 2){
+        cout << pre_min_sum[n-1] << nl;
+        return;
+    }
 
-        if(check(mid,v)){
-            ans = min(ans,n-mid);
-            lo = mid + 1;
-        }
-        else hi = mid - 1;
+    vector<bool> check(n,false);
+
+    check[2] = (pre_min[1] == pre_min[0]);
+
+    for(int i = 3; i < n; i++){
+        check[i] = ((pre_min[i-2] == pre_min[i-1]) || check[i-1]);
+    }
+
+
+    int ans = inf;
+
+    for(int i = 1; i < n; i++){
+        int x = pre_min_sum[i]; 
+        if(check[i]) x += v[i];
+        ans = min(x,ans);
     }
 
     cout << ans << nl;
