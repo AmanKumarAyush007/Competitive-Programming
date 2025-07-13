@@ -15,8 +15,23 @@ using namespace std;
 
 
 void solve(){
-    cout << (-4) % (-2);
-    cout << nl;
+    int n;
+    cin >> n;
+    int k = n;
+    vector<int> X,Y;
+    while(n--){
+        int x, y;
+        cin >> x >> y;
+        X.pb(x);
+        Y.pb(y);
+    }
+    sort(all(X));
+    sort(all(Y));
+
+    int ways = 1;
+    if(k%2 == 0) ways = ((X[(k/2)] - X[(k/2) - 1] + 1) * (Y[(k/2)] - Y[(k/2) - 1] + 1));
+    
+    cout << ways << nl;
 }
 
 signed main(){

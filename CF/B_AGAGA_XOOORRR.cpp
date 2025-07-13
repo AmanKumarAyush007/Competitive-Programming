@@ -15,7 +15,36 @@ using namespace std;
 
 
 void solve(){
-    cout << (-4) % (-2);
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    inp(v)
+    set<int> st;
+    for(auto &i : v) st.insert(i);
+    if(st.size() == 1) {
+        cout << "YES\n";
+        return;
+    }
+    int x = 0;
+    for(auto &i : v) x ^= i;
+
+    if(x == 0) cout << "YES";
+    else{
+        int k = 0;
+        int cnt = 0;
+        for(int i = 0; i < n; i++){
+            k ^= v[i];
+            if(k == x){
+                cnt++;
+                k = 0;
+            }
+            if(cnt > 2) {
+                cout << "YES\n";
+                return;
+            }
+        }
+        cout << "NO";
+    }
     cout << nl;
 }
 

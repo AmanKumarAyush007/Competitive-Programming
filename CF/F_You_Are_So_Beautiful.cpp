@@ -15,8 +15,35 @@ using namespace std;
 
 
 void solve(){
-    cout << (-4) % (-2);
-    cout << nl;
+    int n;
+    cin >> n;
+    vector<int> v(n), pre(n), post(n);
+    inp(v)
+    map<int,int> mp;
+
+    for(int i = 0; i < n; i++){
+        mp[v[i]]++;
+        pre[i] = mp[v[i]];
+        if(mp[v[i]] > 1) pre[i] = 0;
+    }
+
+    mp.clear();
+
+    for(int i = n-1; i >= 0; i--){
+        mp[v[i]]++;
+        post[i] = mp[v[i]];
+        if(mp[v[i]] > 1) post[i] = 0;
+        if(i < n-1) post[i] += post[i+1]; 
+    }
+
+    int ans = 0;
+
+    for(int i = 0; i < n; i++){
+        ans += pre[i]*post[i];
+    }
+
+    
+    cout << ans << nl;
 }
 
 signed main(){
