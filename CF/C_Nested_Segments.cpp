@@ -19,38 +19,36 @@ using namespace std;
   #define debug(x...)
 #endif
 
+bool cmp(const pair<pair<int,int>,int>& a, const pair<pair<int,int>,int>& b){
+    if(a.ff.ff == b.ff.ff && a.ff.ss != b.ff.ss) return a > b;
+    else return a < b;
+}
+
 void solve(){
     int n;
-    
     cin >> n;
-    vector<int> v(n);
-    inp(v)
-
-    
-    map<int,int> mp;
-    int g = 0;
-    for(auto &i : v) {
-        mp[i]++;
-        g = gcd(g,i);
+    vector<pair<pair<int,int>,int>> vp;
+    for(int i = 1; i <= n; i++){
+        int x,y;
+        cin >> x >> y;
+        vp.pb({{x,y},i});
     }
 
-    int reg = 3000;
+    sort(all(vp),cmp);
 
-    for(int i = 0; i < n-1; i++){
-        int curr = 0;
-        for(int j = i; j < n; j++){
-            curr = gcd(v[j],curr);
-            if(curr == 1) {
-                reg = min(reg,j - i);
-                break;
-            }
+    map<int,int> ind;
+    ind[vp[0].ff.ss] = vp[0].ss;
+
+    for(int i = 1; i < n; i++){
+        auto it = ind.lower_bound(vp[i].ff.ss);
+        if(it != ind.end()){
+            cout << vp[i].ss << " " << ind[it->ff] << nl;
+            return;
         }
+        else ind[vp[i].ff.ss] = vp[i].ss;
     }
 
-    if(g != 1) cout << -1;
-    else if(mp[1]) cout << n - mp[1];
-    else cout << n-1 + reg;
-    cout << nl;
+    cout << -1 << " " << -1 << nl;
 }
 
 signed main(){
