@@ -19,37 +19,48 @@ using namespace std;
   #define debug(x...)
 #endif
 
+const int N = 5000;
+
+int G[N+1][N+1];
+
 void solve(){
-    string s,t;
-    cin >> s >> t;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    inp(v)
 
-    int n = s.size();
+    int g = 0;
+    for(auto &i : v) g = __gcd(g,i);
 
-    if(s == t) cout << 2*n;
+    int cnt = count(all(v),g);
+
+    if(cnt) cout << n - cnt;
     else{
-        int j = 0;
-        while(j < n && s[j] == t[j]) j++;
+        vector<int> dp(N+1, 1e9);
+        dp[0] = 0;
 
-        int ans = 2*j;
-
-        if(((t[j]-'0') - (s[j]-'0')) >= 2) cout << ans;
-        else{
-            ans++;
-            j++;
-            for(int i = j; i < n; i++){
-                if(s[i] == '9' && t[i] == '0') ans++;
-                else break;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j <= N; j++){
+                int y = G[v[i]][j];
+                dp[y] = min(dp[y], (dp[j] + 1));
             }
-
-            cout << ans;
         }
+
+        cout << dp[g] + n - 2;
     }
+
     cout << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+    for(int i = 0; i <= N; i++){
+        for(int j = 0; j <= N; j++){
+            G[i][j] = __gcd(i,j);
+        }
+    }
 
     int t = 1;
     cin >> t;

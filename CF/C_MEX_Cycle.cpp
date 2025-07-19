@@ -20,30 +20,15 @@ using namespace std;
 #endif
 
 void solve(){
-    string s,t;
-    cin >> s >> t;
-
-    int n = s.size();
-
-    if(s == t) cout << 2*n;
-    else{
-        int j = 0;
-        while(j < n && s[j] == t[j]) j++;
-
-        int ans = 2*j;
-
-        if(((t[j]-'0') - (s[j]-'0')) >= 2) cout << ans;
-        else{
-            ans++;
-            j++;
-            for(int i = j; i < n; i++){
-                if(s[i] == '9' && t[i] == '0') ans++;
-                else break;
-            }
-
-            cout << ans;
-        }
-    }
+    int n, x, y;
+    cin >> n >> x >> y;
+    --x; --y;
+    vector<int> ans(n);
+    for (int i = 0; i < n; ++i) ans[(x + i) % n] = i % 2;
+    
+    if (n % 2 || (x - y) % 2 == 0) ans[x] = 2;
+        
+    for (auto x : ans)cout << x << " ";
     cout << nl;
 }
 

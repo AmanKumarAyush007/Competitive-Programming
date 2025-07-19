@@ -20,31 +20,23 @@ using namespace std;
 #endif
 
 void solve(){
-    string s,t;
-    cin >> s >> t;
+    int n,k;
+    cin >> n >> k;
+    vector<pair<int,pair<int,int>>> v;
+    while(n--){
+        int l,r,x;
+        cin >> l >> r >> x;
+        v.pb({x,{l,r}});
+    }
+    sort(all(v));
+    debug(v);
 
-    int n = s.size();
-
-    if(s == t) cout << 2*n;
-    else{
-        int j = 0;
-        while(j < n && s[j] == t[j]) j++;
-
-        int ans = 2*j;
-
-        if(((t[j]-'0') - (s[j]-'0')) >= 2) cout << ans;
-        else{
-            ans++;
-            j++;
-            for(int i = j; i < n; i++){
-                if(s[i] == '9' && t[i] == '0') ans++;
-                else break;
-            }
-
-            cout << ans;
+    for(int i = 0; i < v.size(); i++){
+        if(k <= v[i].ss.ss && k >= v[i].ss.ff){
+            if(k < v[i].ff) k = v[i].ff;
         }
     }
-    cout << nl;
+    cout << k << nl;
 }
 
 signed main(){

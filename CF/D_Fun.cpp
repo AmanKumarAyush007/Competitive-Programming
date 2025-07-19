@@ -20,31 +20,21 @@ using namespace std;
 #endif
 
 void solve(){
-    string s,t;
-    cin >> s >> t;
+    int n,k;
+    cin >> n >> k;
 
-    int n = s.size();
+    int ans = 0;
 
-    if(s == t) cout << 2*n;
-    else{
-        int j = 0;
-        while(j < n && s[j] == t[j]) j++;
-
-        int ans = 2*j;
-
-        if(((t[j]-'0') - (s[j]-'0')) >= 2) cout << ans;
-        else{
-            ans++;
-            j++;
-            for(int i = j; i < n; i++){
-                if(s[i] == '9' && t[i] == '0') ans++;
-                else break;
-            }
-
-            cout << ans;
+    for(int a = 1; a <= min(k,n); a++){
+        for(int b = 1; (a*b <= n) && (a+b <= n); b++){
+            int x = k - (a+b);
+            int y = (n-(a*b))/(a+b);
+            int c = min(x,y);
+            if(c >= 1) ans += c;
         }
     }
-    cout << nl;
+
+    cout << ans << nl;
 }
 
 signed main(){
