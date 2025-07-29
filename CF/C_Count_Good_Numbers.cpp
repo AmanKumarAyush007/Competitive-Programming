@@ -12,8 +12,6 @@ using namespace std;
 #define sm(v)      accumulate(all(v),0LL)
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
-#define lg(x)      (63 - __builtin_clzll(x)) //log base 2
-
 
 #ifndef ONLINE_JUDGE
 #include "debug.h" 
@@ -21,39 +19,40 @@ using namespace std;
   #define debug(x...)
 #endif
 
+int cntG(int x){
+    if(x < 1) return 0;
+
+    // x - (those number jo {2,3,5,7} se divible na ho);
+
+    int ans = x;
+
+    ans -= x / 2;
+    ans -= x / 3;
+    ans -= x / 5;
+    ans -= x / 7;
+
+    ans += x / 10;  
+    ans += x / 6;   
+    ans += x / 14;  
+    ans += x / 15;  
+    ans += x / 21;  
+    ans += x / 35;  
+
+    ans -= x / 30;
+    ans -= x / 42;
+    ans -= x / 70;
+    ans -= x / 105;
+
+    ans += x / 210; 
+
+    return ans;
+
+}
+
 void solve(){
-    int n; 
-    cin >> n;
-    set<int> st;
-    for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
-    }
-
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
-
-
-    int ans = 1;
-
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
-    }
-
-    v.pop_back();
-
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
-
+    int l,r;
+    cin >> l >> r;
+    cout << cntG(r) - cntG(l-1);
     cout << nl;
 }
 

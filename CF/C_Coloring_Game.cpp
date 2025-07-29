@@ -27,19 +27,26 @@ void solve(){
 
     int ans = 0;
 
-    for(int i = 1; i < n-1; i++){
-        for(int j = 0; j < i; j++){
+    int x = v[n-1];
+
+    for(int i = 0; i < n-2; i++){
+        for(int j = i+1; j < n-1; j++){
+
             int sum = v[i] + v[j];
-            int ind = n;
-            auto it = lower_bound(all(v),sum);
-            if(it != v.end()) ind = it - v.begin();
-            int d = i;
-            while(d < ind && sum + v[d] <= v[])
-            ans += ind - (d+1);
-            debug(sum,ind);
-            debug(i,j,ans);
-        }
+            int st = j+1;
+            auto itr = lower_bound(v.begin() + (j + 1), v.end(),sum);
+            
+            if(itr - v.begin() == st) continue;
+            auto tt = itr;
+            itr = prev(itr);
+
+            auto it = upper_bound(v.begin() + st, tt,x-sum);
+            if(it > itr) continue;
+
+            ans += itr - it + 1;
+        }    
     }
+    
     cout << ans << nl;
 }
 

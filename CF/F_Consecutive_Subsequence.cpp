@@ -21,39 +21,38 @@ using namespace std;
   #define debug(x...)
 #endif
 
+map<int,int> dp;
+
 void solve(){
-    int n; 
+    int n;
     cin >> n;
-    set<int> st;
+    vector<int> v(n);
+    inp(v);
+
+    int ans = -1,curr = -1;
+    
     for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
+        dp[v[i]] = max(dp[v[i]],dp[v[i] - 1] + 1);
+
+        if(ans < dp[v[i]]){
+            curr = v[i];
+            ans = dp[v[i]];
+        }
     }
 
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
+    cout << ans << nl;
 
-
-    int ans = 1;
-
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
+    vector<int> sol;
+    for(int i = n-1; i >= 0; i--){
+        if(v[i] == curr) {
+            sol.pb(i+1);
+            curr--;
+        }
     }
 
-    v.pop_back();
-
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
-
+    reverse(all(sol));
+    for(auto &i : sol) cout << i << " ";
+    
     cout << nl;
 }
 
@@ -62,7 +61,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

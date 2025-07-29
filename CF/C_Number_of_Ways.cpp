@@ -22,37 +22,14 @@ using namespace std;
 #endif
 
 void solve(){
-    int n; 
+    int n;
     cin >> n;
-    set<int> st;
-    for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
-    }
+    vector<int> v(n);
+    inp(v)
 
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
+    int t = sm(v)
 
-
-    int ans = 1;
-
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
-    }
-
-    v.pop_back();
-
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
+    
 
     cout << nl;
 }
@@ -62,7 +39,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

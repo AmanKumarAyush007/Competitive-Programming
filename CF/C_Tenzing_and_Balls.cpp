@@ -22,39 +22,23 @@ using namespace std;
 #endif
 
 void solve(){
-    int n; 
+    int n;
     cin >> n;
-    set<int> st;
-    for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
+    vector<int> v(n+1),mx(n+5,-1e9), dp(n+1);
+
+    for(int i = 1; i <= n; i++){
+        cin >> v[i];
     }
 
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
+    dp[0] = 0;
 
-
-    int ans = 1;
-
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
+    for(int i = 1; i <= n; i++){
+        dp[i] = max(dp[i-1], i + mx[v[i]]);
+        mx[v[i]] = max(mx[v[i]], dp[i-1] - (i-1));
     }
 
-    v.pop_back();
 
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
-
-    cout << nl;
+    cout << dp[n] << nl;
 }
 
 signed main(){

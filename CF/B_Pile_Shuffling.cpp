@@ -12,8 +12,6 @@ using namespace std;
 #define sm(v)      accumulate(all(v),0LL)
 #define inp(v)     for(auto& x : v) cin >> x;
 #define setbit(x)  __builtin_popcountll(x)
-#define lg(x)      (63 - __builtin_clzll(x)) //log base 2
-
 
 #ifndef ONLINE_JUDGE
 #include "debug.h" 
@@ -22,39 +20,21 @@ using namespace std;
 #endif
 
 void solve(){
-    int n; 
+    int n;
     cin >> n;
-    set<int> st;
-    for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
+    int ans = 0;
+    while(n--){
+        int a,b,c,d;
+        cin >> a >> b >> c >> d;
+        if(c < a && b > d){
+            ans += (a-c) + (b - d) + c;
+        }
+        else if(b > d){
+            ans += (b - d) + min(a,c);
+        }
+        else if(c < a ) ans += a-c;
     }
-
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
-
-
-    int ans = 1;
-
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
-    }
-
-    v.pop_back();
-
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
-
-    cout << nl;
+    cout << ans << nl;
 }
 
 signed main(){

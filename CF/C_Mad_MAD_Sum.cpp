@@ -5,51 +5,70 @@ using namespace std;
 #define ff         first
 #define ss         second
 #define pb         push_back
+#define inf        LLONG_MAX
+#define hell       LLONG_MIN
 #define nl         '\n'
 #define all(a)     (a).begin(),(a).end()
+#define sm(v)      accumulate(all(v),0LL)
+#define inp(v)     for(auto& x : v) cin >> x;
+#define setbit(x)  __builtin_popcountll(x)
+
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+  #define debug(x...)
+#endif
 
 void solve(){
-    int n; cin >> n;
-    int a[n];
-    int sum = 0;
-    for(auto &i : a) {
-        cin >> i;
-        sum += i;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    inp(v)
+
+    int ans = sm(v);
+
+    map<int,int>mp;
+
+    mp[v[0]]++;
+    v[0] = 0;
+    int mx = 0;
+    
+    for(int i = 1; i < n; i++){
+        mp[v[i]]++;
+        if(mp[v[i]] >= 2) mx = max(v[i],mx);
+        v[i] = mx;
     }
-    // cout << sum;
-    if(n == 1) {
-        cout << sum << nl;
-        return;
-    }
-    bool ck = true;
-    set<int> s;
-    map<int,int> mp;
-    for(int i = 0; i < n; i++){
-        mp[a[i]]++;
-        if(mp[a[i]] >= 2) s.insert(a[i]);
-        if(s.size() == 0) a[i] = 0;
-        else {
-            a[i] = *s.rbegin();
+
+    ans += sm(v);
+    debug(v);
+
+
+    if(v.size() >= 2){
+        mp.clear();
+        mp[v[1]]++;
+        v[1] = 0;
+        mx = 0;
+        
+
+        for(int i = 2; i < n; i++){
+            mp[v[i]]++;
+            if(mp[v[i]] >= 2) mx = max(v[i],mx);
+            v[i] = mx;
         }
     }
-    
-    int pre[n];
-    pre[0] = a[0];
-    
 
-    for(int i = 1; i <= n ; i++){
-        pre[i] = a[i] + pre[i-1];
+    debug(v);
+
+
+    for(int i = 1; i < n; i++){
+        v[i] += v[i-1];
     }
-    
-    
 
+    ans += sm(v);
 
+    // debug(v);
 
-    for(auto &i : pre) cout << i << " ";
-    // cout << nl;
-    for(auto &i : pre) sum += i;
-
-    cout << sum << nl;
+    cout << ans << nl;
 }
 
 signed main(){

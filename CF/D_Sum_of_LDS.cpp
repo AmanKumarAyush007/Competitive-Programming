@@ -21,40 +21,41 @@ using namespace std;
   #define debug(x...)
 #endif
 
+vector<int> dp;
+vector<int> v;
+
+int rec(int i){
+    if (i == 0) return 1;
+    if (i == 1) {
+        return (v[1] < v[0]) ? 3 : 2;
+    }
+    if (dp[i] != -1) return dp[i];
+    
+    if (v[i] < v[i-1]) {
+        dp[i] = rec(i - 1) + i + 1;
+    } else {
+        dp[i] = rec(i - 2) + i + 1;
+    }
+    return dp[i];
+}
+
+
 void solve(){
-    int n; 
+    int n;
     cin >> n;
-    set<int> st;
+    v.resize(n);
+    inp(v)
+
+    dp.assign(n+5, -1);
+    dp[0] = 1;
+
+    int ans = 0;
+
     for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
+        ans += rec(i);
     }
-
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
-
-
-    int ans = 1;
-
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
-    }
-
-    v.pop_back();
-
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
-
-    cout << nl;
+    
+    cout << ans << nl;
 }
 
 signed main(){

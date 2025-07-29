@@ -21,40 +21,34 @@ using namespace std;
   #define debug(x...)
 #endif
 
+
+map<int,int> mp;
+vector<int> dp(1e5 + 5,-1);
+
+
+
+int rec(int i){
+    if(i <= 0) return 0;
+    if(i == 1) return mp[i];
+
+    if(dp[i] != -1) return dp[i];
+
+    return dp[i] = max(rec(i-1) , rec(i-2) + (i * mp[i]));
+}
+
 void solve(){
-    int n; 
+    int n;
     cin >> n;
-    set<int> st;
-    for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        st.insert(x);
-    }
+    vector<int> v(n);
+    inp(v)
 
-    if(st.size() == 1) {
-        cout << "Alice\n";
-        return;
-    }
-    vector<int> v(all(st));
+    mp.clear();
 
+    for(auto &i : v) mp[i]++;
 
-    int ans = 1;
+    int x = *max_element(all(v));
 
-
-    for(int i = v.size() - 1; i > 0; i--){
-        v[i] = v[i] - v[i-1];
-    }
-
-    v.pop_back();
-
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] > 1) break;
-        else ans ^= 1;
-    }
-
-    cout << (ans ? "Alice" : "Bob");
-
-    cout << nl;
+    cout << rec(x) << nl;
 }
 
 signed main(){
@@ -62,7 +56,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }
