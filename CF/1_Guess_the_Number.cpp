@@ -7,7 +7,7 @@ using namespace std;
 #define pb         push_back
 #define inf        LLONG_MAX
 #define hell       LLONG_MIN
-#define nl         '\n'
+// #define nl         '\n'
 #define all(a)     (a).begin(),(a).end()
 #define sm(v)      accumulate(all(v),0LL)
 #define inp(v)     for(auto& x : v) cin >> x;
@@ -22,39 +22,26 @@ using namespace std;
 #endif
 
 void solve(){
-    int n, k, q;
-    cin >> n >> k >> q;
-    vector<int> a,b;
-    a.pb(0);
-    b.pb(0);
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        a.pb(x);
-    }
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        b.pb(x);
-    }
+    int lo = 1, hi = 1e6;
+    int ans = 0;
+
+    while(lo <= hi){
+        int mid = (lo + hi) / 2;
+        cout << mid << endl;
+
+        string res;
+        cin >> res;
 
 
-    while(q--){
-        int x;
-        cin >> x;
-
-        auto it = lower_bound(all(a),x);
-
-        if(*it == x) cout << b[it - a.begin()] << " ";
-        else{
-            int ind = it - a.begin() - 1;
-            int ans = b[ind];
-            ans += ((x - a[ind]) * (b[ind+1] - b[ind]) ) / (a[ind+1] - a[ind]);
-            cout << ans << " ";
+        if(res == ">="){
+            ans = mid;
+            lo = mid + 1;
         }
-
+        else hi = mid - 1;
     }
-    cout << nl;
+
+    cout << "! " << ans << endl;
+    
 }
 
 signed main(){
@@ -62,7 +49,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

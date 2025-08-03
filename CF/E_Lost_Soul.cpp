@@ -22,39 +22,32 @@ using namespace std;
 #endif
 
 void solve(){
-    int n, k, q;
-    cin >> n >> k >> q;
-    vector<int> a,b;
-    a.pb(0);
-    b.pb(0);
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        a.pb(x);
-    }
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        b.pb(x);
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    inp(a)
+    inp(b)
+
+
+    if(a[n-1] == b[n-1]){
+        cout << n << nl;
+        return;
     }
 
+    int ans = -1;
+    vector<bool> seen(n+1);
 
-    while(q--){
-        int x;
-        cin >> x;
 
-        auto it = lower_bound(all(a),x);
-
-        if(*it == x) cout << b[it - a.begin()] << " ";
-        else{
-            int ind = it - a.begin() - 1;
-            int ans = b[ind];
-            ans += ((x - a[ind]) * (b[ind+1] - b[ind]) ) / (a[ind+1] - a[ind]);
-            cout << ans << " ";
+    for(int i = n-2; i >= 0; i--){
+        if(a[i] == b[i] || a[i] == a[i+1] || b[i] == b[i+1] || seen[a[i]] || seen[b[i]]){
+            ans = i;
+            break;
         }
-
+        seen[a[i+1]] = seen[b[i+1]] = true;
     }
-    cout << nl;
+
+    ans++;
+    cout << ans << nl;
 }
 
 signed main(){

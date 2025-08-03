@@ -22,39 +22,15 @@ using namespace std;
 #endif
 
 void solve(){
-    int n, k, q;
-    cin >> n >> k >> q;
-    vector<int> a,b;
-    a.pb(0);
-    b.pb(0);
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        a.pb(x);
-    }
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        b.pb(x);
-    }
-
-
-    while(q--){
-        int x;
-        cin >> x;
-
-        auto it = lower_bound(all(a),x);
-
-        if(*it == x) cout << b[it - a.begin()] << " ";
-        else{
-            int ind = it - a.begin() - 1;
-            int ans = b[ind];
-            ans += ((x - a[ind]) * (b[ind+1] - b[ind]) ) / (a[ind+1] - a[ind]);
-            cout << ans << " ";
-        }
-
-    }
-    cout << nl;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    inp(v)
+    int ans = sm(v);
+    set<int> s(all(v));
+    ans += count(all(v),0);
+    
+    cout << ans << nl;
 }
 
 signed main(){

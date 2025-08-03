@@ -22,38 +22,34 @@ using namespace std;
 #endif
 
 void solve(){
-    int n, k, q;
-    cin >> n >> k >> q;
-    vector<int> a,b;
-    a.pb(0);
-    b.pb(0);
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        a.pb(x);
-    }
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        b.pb(x);
+    int n;
+    cin >> n;
+    vector<pair<pair<int,int>,int>> vp;
+    for(int i = 0; i < n; i++){
+        int x,y;
+        cin >> x >> y;
+        vp.pb({{x,y},i+1});
     }
 
+    sort(all(vp));
 
-    while(q--){
-        int x;
-        cin >> x;
+    set<int> st;
 
-        auto it = lower_bound(all(a),x);
+    vector<int> ans;
 
-        if(*it == x) cout << b[it - a.begin()] << " ";
-        else{
-            int ind = it - a.begin() - 1;
-            int ans = b[ind];
-            ans += ((x - a[ind]) * (b[ind+1] - b[ind]) ) / (a[ind+1] - a[ind]);
-            cout << ans << " ";
-        }
-
+    for(int i = 0; i < n; i++){
+        auto [a,b] = vp[i].ff;
+        if(st.find(a) != st.end() && st.find(b) != st.end()) continue;
+        st.insert(a);
+        st.insert(b);
+        ans.pb(vp[i].ss);
     }
+
+    sort(all(ans));
+
+    cout << ans.size() << nl;
+    for(auto &i : ans) cout << i << " ";
+
     cout << nl;
 }
 

@@ -22,39 +22,39 @@ using namespace std;
 #endif
 
 void solve(){
-    int n, k, q;
-    cin >> n >> k >> q;
-    vector<int> a,b;
-    a.pb(0);
-    b.pb(0);
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        a.pb(x);
+    int n;
+    cin >> n;
+    int s;
+    cin >> s;
+    vector<int> v(n);
+    inp(v)
+
+    int tot = sm(v);
+
+    if(s < tot){
+        for(auto &i : v) cout << i << " ";
+        cout << nl;
     }
-    for(int i = 0; i < k; i++){
-        int x;
-        cin >> x;
-        b.pb(x);
-    }
-
-
-    while(q--){
-        int x;
-        cin >> x;
-
-        auto it = lower_bound(all(a),x);
-
-        if(*it == x) cout << b[it - a.begin()] << " ";
+    else {
+        int diff = s - tot;
+        int cnt = count(all(v),1);
+        if(diff != 1) cout << -1;
         else{
-            int ind = it - a.begin() - 1;
-            int ans = b[ind];
-            ans += ((x - a[ind]) * (b[ind+1] - b[ind]) ) / (a[ind+1] - a[ind]);
-            cout << ans << " ";
-        }
+            vector<int> ans;
+            int x = count(all(v),0);
+            while(x--) ans.pb(0);
+            
+            x = count(all(v),2);
+            while(x--) ans.pb(2);
 
+            x = count(all(v),1);
+            while(x--) ans.pb(1);
+
+            for(auto &i : ans) cout << i << " ";
+
+        }
+        cout << nl;
     }
-    cout << nl;
 }
 
 signed main(){
