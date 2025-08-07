@@ -21,13 +21,39 @@ using namespace std;
   #define debug(x...)
 #endif
 
+
+
 void solve(){
-    for(int i = 0; i < 50; i++){
-        for(int j = i+1; j < 50; j++){
-            if((i^j) == (i+j)) cout << i << " " << j <<nl;
+    int n;
+    cin >> n;
+    if(n == 1) cout << 0 << nl;
+    else{
+        vector<vector<int>> v(n,vector<int>(n));
+        int st = (n*n) - 1;
+        for(int i = 0; i < n-2; i++){
+            v[i][i] = st;
+            st--;
+            for(int j = n-1; j > i; j--){
+                v[j][i] = st;
+                st--;
+            }
+            for(int j = n-1; j > i; j--){
+                v[i][j] = st;
+                st--;
+            }
+            
+        }
+
+        v[n-1][n-1] = 3;
+        v[n-2][n-1] = 1;
+        v[n-1][n-2] = 2;
+        v[n-2][n-2] = 0;
+
+        for(auto &i : v){
+            for(auto &el : i) cout << el << " ";
+            cout << nl;
         }
     }
-    cout << nl;
 }
 
 signed main(){

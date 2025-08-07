@@ -22,12 +22,12 @@ using namespace std;
 #endif
 
 void solve(){
-    for(int i = 0; i < 50; i++){
-        for(int j = i+1; j < 50; j++){
-            if((i^j) == (i+j)) cout << i << " " << j <<nl;
-        }
-    }
-    cout << nl;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    inp(v)
+    
+    cout << *max_element(all(v))-*min_element(all(v)) << nl;
 }
 
 signed main(){

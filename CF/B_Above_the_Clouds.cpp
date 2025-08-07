@@ -22,12 +22,37 @@ using namespace std;
 #endif
 
 void solve(){
-    for(int i = 0; i < 50; i++){
-        for(int j = i+1; j < 50; j++){
-            if((i^j) == (i+j)) cout << i << " " << j <<nl;
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+
+    map<char,int> mp;
+    for(auto &i : s) mp[i]++;
+    mp[s[n-1]]--;
+
+    for(auto &[a,b] : mp) {
+        if(b >= 2){
+            cout << "Yes\n";
+            return;
         }
     }
-    cout << nl;
+
+    mp.clear();
+
+
+    for(auto &i : s) mp[i]++;
+    mp[s[0]]--;
+
+    for(auto &[a,b] : mp) {
+        if(b >= 2){
+            cout << "Yes\n";
+            return;
+        }
+    }
+
+
+    cout << "No"<< nl;
 }
 
 signed main(){

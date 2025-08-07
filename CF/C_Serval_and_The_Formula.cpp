@@ -22,12 +22,18 @@ using namespace std;
 #endif
 
 void solve(){
-    for(int i = 0; i < 50; i++){
-        for(int j = i+1; j < 50; j++){
-            if((i^j) == (i+j)) cout << i << " " << j <<nl;
-        }
+    int x,y;
+    cin >> x >> y;
+
+    if(x == y){
+        cout << -1 << nl;
+        return;
     }
-    cout << nl;
+    
+    int ans = (1LL << (lg(max(x,y)) + 1)) - max(x,y);
+    
+    
+    cout << ans << nl;
 }
 
 signed main(){

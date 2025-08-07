@@ -28,6 +28,7 @@ void solve()
     else
         time = (n - 2) * 2 * a[0] + a[0];
 
+
     if (k >= time)
         cout << "YES";
     else
@@ -42,11 +43,11 @@ signed main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    #ifndef ONLINE_JUDGE
-    // freopen("error.txt", "w", stderr);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    #endif
+    // #ifndef ONLINE_JUDGE
+    // // freopen("error.txt", "w", stderr);
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
+    // #endif
 
     int t = 1;
     cin >> t;
