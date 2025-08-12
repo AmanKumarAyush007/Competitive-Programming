@@ -21,35 +21,49 @@ using namespace std;
   #define debug(x...)
 #endif
 
-const int N = 2e5 + 5;
+void solve(){
+    int n,k;
+    cin >> n >> k;
+    vector<int> a(n), b(n);
+    inp(a)
+    inp(b)
 
-vector<vector<int>> factors(N);
+    int ans = 0;
 
-void count(){
-    for(int i = 1; i < N; i++){
-        for(int j = i+i; j < N; j += i){
-            factors[j].pb(i);
+    for(int i = 0; i < n; i++){
+        ans += abs(a[i] - b[i]);
+    }
+
+    vector<pair<int,int>> vp(n);
+    
+    for(int i = 0; i < n; i++){
+        vp[i].ff = min(a[i],b[i]);
+        vp[i].ss = max(a[i],b[i]);
+    }
+
+    sort(all(vp));
+
+    vector<int> gaps;
+
+    for(int i = 1; i < n; i++){
+        if(vp[i-1].ss < vp[i].ff) gaps.pb(vp[i].ff - vp[i-1].ss);
+        else {
+            cout << ans << nl;
+            return;
         }
     }
-}
 
-void solve(){
+    sort(all(gaps));
 
-    for(int i = 1; i < 11; i++){
-        for(auto &j : factors[i]) cout << j <<" ";
-        cout << nl;
-        
-    }
-    cout << nl;
+    cout << ans + (2*gaps[0]) << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    count();
-
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

@@ -21,24 +21,32 @@ using namespace std;
   #define debug(x...)
 #endif
 
-const int N = 2e5 + 5;
-
-vector<vector<int>> factors(N);
-
-void count(){
-    for(int i = 1; i < N; i++){
-        for(int j = i+i; j < N; j += i){
-            factors[j].pb(i);
-        }
-    }
-}
-
 void solve(){
+    int n,x;
+    cin >> n >> x;
+    string s;
+    cin >> s;
 
-    for(int i = 1; i < 11; i++){
-        for(auto &j : factors[i]) cout << j <<" ";
-        cout << nl;
-        
+    set<char> st;
+    for(auto &i : s) st.insert(i);
+
+    if(st.size() == 1 || x == 1 || x == n) cout << 1;
+    else {
+        int l = 0;
+        int i = x - 2;
+        while(i >= 0 && s[i] == '.'){
+            l++;
+            i--;
+        }
+
+        int r = 0;
+        i = x;
+        while(i < n && s[i] == '.'){
+            r++;
+            i++;
+        }
+
+        cout << max(min(x-l,n-x+1),min(x,n-x+1-r));
     }
     cout << nl;
 }
@@ -47,9 +55,8 @@ signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    count();
-
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

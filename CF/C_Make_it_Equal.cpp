@@ -21,35 +21,40 @@ using namespace std;
   #define debug(x...)
 #endif
 
-const int N = 2e5 + 5;
+void solve(){
+    int n,k;
+    cin >> n >> k;
+    vector<int> a(n), b(n);
+    inp(a)
+    inp(b)
 
-vector<vector<int>> factors(N);
+    map<int,int> mpa, mpb;
 
-void count(){
-    for(int i = 1; i < N; i++){
-        for(int j = i+i; j < N; j += i){
-            factors[j].pb(i);
+    auto cov = [&](int x){
+        int r = x % k;
+        int mr = (k - r) % k; 
+        return max(r, mr);   
+    };
+    
+    for(auto &i : a) mpa[cov(i)]++;
+    for(auto &i : b) mpb[cov(i)]++;
+
+    for(auto &[x,y] : mpa) {
+        if(y != mpb[x]){
+            cout << "NO\n";
+            return; 
         }
     }
-}
 
-void solve(){
-
-    for(int i = 1; i < 11; i++){
-        for(auto &j : factors[i]) cout << j <<" ";
-        cout << nl;
-        
-    }
-    cout << nl;
+    cout << "YES" << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    count();
-
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

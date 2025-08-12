@@ -21,24 +21,27 @@ using namespace std;
   #define debug(x...)
 #endif
 
-const int N = 2e5 + 5;
-
-vector<vector<int>> factors(N);
-
-void count(){
-    for(int i = 1; i < N; i++){
-        for(int j = i+i; j < N; j += i){
-            factors[j].pb(i);
-        }
-    }
-}
-
 void solve(){
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    inp(a)
+    inp(b)
 
-    for(int i = 1; i < 11; i++){
-        for(auto &j : factors[i]) cout << j <<" ";
-        cout << nl;
-        
+    if(a[n-1] != b[n-1]) cout << "NO";
+    else{
+        for(int i = n-2; i >= 0; i--){
+            if(a[i] == b[i]) continue;
+            else{
+                if((a[i]^a[i+1]) != b[i]) {
+                    cout << "NO\n";
+                    return;
+                }
+                a[i] = a[i]^a[i+1];
+                
+            }
+        }
+        cout << "YES";
     }
     cout << nl;
 }
@@ -47,9 +50,8 @@ signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    count();
-
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

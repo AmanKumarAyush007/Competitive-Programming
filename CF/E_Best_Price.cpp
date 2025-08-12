@@ -21,35 +21,44 @@ using namespace std;
   #define debug(x...)
 #endif
 
-const int N = 2e5 + 5;
-
-vector<vector<int>> factors(N);
-
-void count(){
-    for(int i = 1; i < N; i++){
-        for(int j = i+i; j < N; j += i){
-            factors[j].pb(i);
-        }
-    }
-}
-
 void solve(){
+    int n,k;
+    cin >> n >> k;
+    vector<int> a(n), b(n);
+    inp(a)
+    inp(b)
+    
+    sort(all(a));
+    sort(all(b));
+    
+    set<int> st;
+    for(auto &i : a) st.insert(i);
+    for(auto &i : b) st.insert(i);
 
-    for(int i = 1; i < 11; i++){
-        for(auto &j : factors[i]) cout << j <<" ";
-        cout << nl;
+    int ans = 0;
+
+    for(auto &i : st){
+        auto it = lower_bound(all(a),i);
+        int x = it - a.begin();
+
+        it = lower_bound(all(b),i);
+        int y = it - b.begin();
+
+        if((x - y) <= k){
+            ans = max(ans,(n-y)*i);
+        }
         
     }
-    cout << nl;
+
+    cout << ans << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    count();
-
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }
