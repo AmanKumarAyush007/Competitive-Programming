@@ -33,6 +33,8 @@ void solve(){
         for(int i = n-2; i >= 0; i--){
             if(a[i] == b[i]) continue;
             else{
+                debug(a);
+                debug(b);
                 if((a[i]^a[i+1]) != b[i]) {
                     cout << "NO\n";
                     return;

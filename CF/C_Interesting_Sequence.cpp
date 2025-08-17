@@ -24,9 +24,36 @@ using namespace std;
   #define debug(x...)
 #endif
 
+
 void solve(){
-    cout << (5 >> 0);
-    cout << nl;
+    int n , k;
+    cin >> n >> k;
+
+    auto check = [&](int x){
+        int left = n;
+        int right = x;
+        for(int i = 0 ; i < 64; i++){
+            if(right == left) return (right << i);
+            right >>= 1;
+            left >>= 1;
+        }
+        return 0LL;
+    };
+
+    int ans = -1;
+    int lo = n , hi = 5*(1e18);
+
+    while(lo <= hi){
+        int mid = hi - ((hi - lo) / 2);
+        int curr = check(mid);
+        if(curr <= k) {
+            if(curr == k) ans = mid;
+            hi = mid - 1;
+        }
+        else lo = mid + 1;
+    }
+    
+    cout << ans << nl;
 }
 
 signed main(){
@@ -34,6 +61,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

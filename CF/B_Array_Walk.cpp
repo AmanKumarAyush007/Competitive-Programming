@@ -25,8 +25,27 @@ using namespace std;
 #endif
 
 void solve(){
-    cout << (5 >> 0);
-    cout << nl;
+    int n,k,z;
+    cin >> n >> k >> z;
+    vector<int> v(n), pref(n);
+    inp(v)
+
+    pref = v;
+
+    prefixsum(pref);
+
+    
+    int bestPair = 0;
+    int ans = 0;
+
+    for (int i = 0; i <= k; i++){  
+        if (i < n - 1) bestPair = max(bestPair, v[i] + v[i + 1]);
+        int rem = k - i;         
+        int lefts = min(z, rem / 2);
+        ans = max(ans, pref[i] + 1LL * bestPair * lefts);
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){
@@ -34,6 +53,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

@@ -25,7 +25,55 @@ using namespace std;
 #endif
 
 void solve(){
-    cout << (5 >> 0);
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(n) ,s;
+    inp(v)
+    s = v;
+    sort(all(s));
+
+    int x = s[k-1];
+
+    debug(x);
+
+    s.resize(0);
+    debug(s);
+
+    for(int i = 0; i < n; i++){
+        if(v[i] < x) s.pb(v[i]);
+        else if(v[i] == x) s.pb(-1);
+    }
+
+    debug(s);
+
+    int l = 0;
+    int r = s.size() - 1;
+
+    int cnt = s.size();
+    debug(cnt);
+
+    while(l <= r){
+        if(s[l] == s[r]) l++,r--;
+        else{
+            if(s[l] == -1 || s[r] == -1){
+                if(s[l] == -1) l++,cnt--;
+                else r--,cnt--;
+                if(cnt < k-1){
+                    cout << "NO\n";
+                    return;
+                }
+            }
+            else {
+                cout << "NO\n";
+                return;
+            }
+        }
+        debug(l,r,cnt);
+    }
+
+    if(cnt < k-1) cout << "NO";
+    else cout << "YES";
+
     cout << nl;
 }
 
@@ -34,6 +82,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }

@@ -25,8 +25,9 @@ using namespace std;
 #endif
 
 void solve(){
-    cout << (5 >> 0);
-    cout << nl;
+    int a,b;
+    cin >> a >> b;
+    cout << 6 - (a+b) << nl;
 }
 
 signed main(){

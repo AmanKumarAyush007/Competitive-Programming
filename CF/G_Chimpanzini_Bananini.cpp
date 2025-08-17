@@ -25,8 +25,52 @@ using namespace std;
 #endif
 
 void solve(){
-    cout << (5 >> 0);
-    cout << nl;
+    int n;
+    cin >> n;
+
+    deque<int> dq, dqr;
+    int rizz= 0,rizzy = 0;
+    int sum = 0;
+
+    for(int i = 0; i < n; i++){
+        int s;
+        cin >> s;
+        if(s == 3) {
+            int k;
+            cin >> k;
+
+            dq.push_back(k);
+            dqr.push_front(k);
+
+            rizzy += sum + k;
+            rizz += (dq.size() * k);
+
+            sum += k;
+
+        }
+        else if(s == 1){
+            rizz -= dq.back() * dq.size();
+            rizz += sum;
+            
+            rizzy -= sum;
+            rizzy += dqr.front() * dqr.size();
+
+            int x = dq.back();
+            dq.pop_back();
+            dq.push_front(x);
+
+            x = dqr.front();
+            dqr.pop_front();
+            dqr.push_back(x);
+
+        }
+        else{
+            swap(dq,dqr);
+            swap(rizz,rizzy);
+        }
+
+        cout << rizz << nl;
+    }
 }
 
 signed main(){
@@ -34,6 +78,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
+    cin >> t;
     while(t--){
         solve();
     }
