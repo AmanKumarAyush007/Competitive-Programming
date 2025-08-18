@@ -88,6 +88,7 @@ void solve() {
     for(int i = 0; i < n; i++){
         int l,r,p,q;
         cin >> l >> r >> p >> q;
+        
         ans *= (q-p);
         ans %= MOD;
         ans *= modInverse(q,MOD);
