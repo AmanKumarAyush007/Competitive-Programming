@@ -1,57 +1,91 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include<bits/stdc++.h>
 using namespace std;
 
-class SegmentTree {
-    int n;
-    vector<vector<int>> tree;
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              LLONG_MAX
+#define hell             LLONG_MIN
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-    void build(vector<int> &a, int v, int tl, int tr) {
-        if (tl == tr) {
-            tree[v] = {a[tl]};
-        } else {
-            int tm = (tl + tr) / 2;
-            build(a, v*2, tl, tm);
-            build(a, v*2+1, tm+1, tr);
-            // merge the sorted vectors from children
-            merge(tree[v*2].begin(), tree[v*2].end(),
-                  tree[v*2+1].begin(), tree[v*2+1].end(),
-                  back_inserter(tree[v]));
+
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+  #define debug(x...)
+#endif
+
+// int tot(vector<int> & v){
+//     int ans = 0;
+//     for(int i = 0; i < 4; i++){
+//         int mn = v[i];
+//         for(int j = i; j < 4; j++){
+//             mn = min(v[j],mn);
+//             ans += mn;
+//         }
+
+//     }
+//     return ans;
+// }
+
+void solve(int n){
+    
+    vector<int> v(n);
+    iota(all(v),1);
+    debug(v);
+
+    auto tot = [&](){
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            int mn = v[i];
+            for(int j = i; j < n; j++){
+                mn = min(v[j],mn);
+                ans += mn;
+            }
+
         }
+        return ans;
+    };
+
+    int net = 0;
+
+    for(int i = 1; i <= n; i++){
+        net += i * (n-i + 1);
     }
 
-    // Query: count of elements > k in [l, r]
-    int query(int v, int tl, int tr, int l, int r, int k) {
-        if (l > r) return 0;
-        if (tl == l && tr == r) {
-            // Elements in tree[v] are sorted; find first greater than k
-            auto it = upper_bound(tree[v].begin(), tree[v].end(), k);
-            return tree[v].end() - it;
+    int cnt = 1;
+
+    do {
+        
+        if(tot() == net){
+            cout << cnt << "    ";
+            cnt++;
+            for (auto i : v)  std::cout << i << " ";
+
+            cout << " " << tot();
+            std::cout << std::endl;
         }
-        int tm = (tl + tr) / 2;
-        return query(v*2, tl, tm, l, min(r, tm), k) +
-               query(v*2+1, tm+1, tr, max(l, tm+1), r, k);
-    }
-
-public:
-    SegmentTree(vector<int> &a) {
-        n = a.size();
-        tree.resize(4*n);
-        build(a, 1, 0, n-1);
-    }
-
-    int range_greater(int l, int r, int k) {
-        // Convert to 0-based indexing
-        return query(1, 0, n-1, l, r, k);
-    }
-};
-
-int main() {
-    vector<int> a = {3 ,1 ,5 ,2 ,7 ,6 ,4};
-    SegmentTree st(a);
-    int l = 0, r = 6, k = 3; // Query: indices 1-4, k=4
-    cout << st.range_greater(l, r, k) << endl; // Output: 2 (for 5 and 8)
-    return 0;
+            
+    } while (std::next_permutation(v.begin(), v.end()));
+    cout << nl;
 }
 
+signed main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t = 7;
+    while(t--){
+        solve(t);
+    }
+    return 0;
+}
