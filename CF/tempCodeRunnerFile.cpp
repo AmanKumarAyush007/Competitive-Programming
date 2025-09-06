@@ -1,48 +1,48 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+#include <atcoder/modint>
 using namespace std;
+using namespace atcoder;
 
-#define int int64_t
-vector<int>pt;
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              LLONG_MAX
+#define hell             LLONG_MIN
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-void ptr(){
-    pt.push_back(1);
-    for(int i=0;i<30;i++){
-        pt.push_back(pt.back()*3);
-    }
-}
-void solve() {
-   int n;
-   cin>>n;
-   int p=0;
-   while(pt[p]<=n){
-    p++;
-   }
-   p--;
-  // cout<<p<<endl;
-   int ans=0;
-   if(pt[p+1]==n){
-    ans+=((pt[p+2]+((p+1)*pt[p])));
-    n-=(pt[p+1]);
-   }
-   else if(pt[p]*2<=n){
-    ans+=(2*((pt[p+1]+((p)*pt[p-1]))));
-    n-=(pt[p]*2);
-  //  cout<<ans<<endl;
-   }
-   else{
-   ans+=((pt[p+1]+((p)*pt[p-1])));
-    n-=pt[p];
-   }
-   ans+=n*3;
-   cout<<ans<<endl;
+
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+  #define debug(x...)
+#endif
+
+using mint = modint7;
+
+void solve(){
+    mint a = 10;
+    cout << a.val();
+    
+    cout << nl;
 }
 
-signed main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    int t;
-    ptr();
+signed main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t = 1;
     cin >> t;
-    while (t--) solve();
+    while(t--){
+        solve();
+    }
     return 0;
 }

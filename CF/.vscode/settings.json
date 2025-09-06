@@ -105,7 +105,8 @@
     "iomanip": "cpp",
     "mutex": "cpp",
     "stdfloat": "cpp",
-    "typeindex": "cpp"
+    "typeindex": "cpp",
+    "climits": "cpp"
   },
   "C_Cpp.default.cppStandard": "c++20",
   "C_Cpp.files.exclude": {
