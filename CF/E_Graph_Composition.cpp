@@ -1,59 +1,93 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define int        int64_t
-#define ff         first
-#define ss         second
-#define pb         push_back
-#define nl         '\n'
-#define all(a)     (a).begin(),(a).end()
-#define inp(v)     for(auto& x : v) cin >> x
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+#define debug(x...)
+#endif
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              LLONG_MAX
+#define hell             LLONG_MIN
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
+
+using pi = pair<int,int>;
+
+struct DSU {
+    vector<int> e;
+
+    DSU(int n) : e(n, -1) {}
+
+    int size(int x) { return -e[find(x)]; }
+    int find(int x) { return e[x] < 0 ? x : find(e[x]); }
+
+    bool join(int a, int b) {
+        a = find(a), b = find(b);
+        if (a == b) return false;
+        if (e[a] > e[b]) swap(a, b);
+        e[a] += e[b]; e[b] = a;
+        return true;
+    }
+};
 
 
 void solve(){
-    int n,x,y;
-    cin >> n >> x >> y;
-    map<pair<int,int>,int> f,g;
+    int n,m1, m2;
+    cin >> n >> m1 >> m2;
 
-    while(x--){
-        int a,b;
-        cin >> a >> b;
-        if(a > b) swap(a,b);
-        f[make_pair(a,b)]++;
+
+    set<pi> F,G;
+
+
+    while(m1--){
+        int x,y;
+        cin >> x >> y;
+        if(x < y) swap(x,y);
+        F.insert({x,y});
+    }  
+    while(m2--){
+        int x,y;
+        cin >> x >> y;
+        if(x < y) swap(x,y);
+        G.insert({x,y});
     }
 
-    while(y--){
-        int a,b;
-        cin >> a >> b;
-        if(a > b) swap(a,b);
-        g[make_pair(a,b)]++;
-    }
     int ans = 0;
 
-    // for(auto &[a,b] : g){
-    //     auto it = f.find(a); 
-    //     if (it == f.end()) {
-    //         ans++;  
-    //     } else {
-    //         f.erase(it); 
-    //     }
-    // }
+    DSU dsu(n+1);
 
-    for(auto &[a,b] : f){
-        auto it = g.find(a);
-        if(it == g.end()) ans++;
-        else {
-            g.erase(it); 
-        }
+    for(auto &[x,y] : G) dsu.join(x,y);
+
+    vector<pair<int,int>> keptF;
+    for (auto &[u,v] : F) {
+        if (dsu.find(u) != dsu.find(v)) ans++; 
+        else keptF.push_back({u,v});
     }
 
+    DSU dsuf(n+1);
+    for (auto &[u,v] : keptF) dsuf.join(u,v);
 
+    set<int> sf,sg;
 
-    // cout << ans + f.size();
-    cout << ans + g.size();
+    for(int i = 1; i <= n; i++){
+        sf.insert(dsuf.find(i));
+        sg.insert(dsu.find(i));
+    }
 
+    int diff = sf.size() - sg.size();
 
-    cout << nl;
+    cout << ans + diff << nl;
 }
 
 signed main(){

@@ -1,29 +1,41 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define int        int64_t
-#define ff         first
-#define ss         second
-#define pb         push_back
-#define nl         '\n'
-#define all(a)     (a).begin(),(a).end()
-#define inp(v)     for(auto& x : v) cin >> x
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+#define debug(x...)
+#endif
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              LLONG_MAX
+#define hell             LLONG_MIN
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
-void solve(){ 
-    int n,m;
-    cin >> n >> m;
-    
-    vector<int> v(1e9 + 9);
-    for(int i = 1; i <= m; i++){
-        v[i] = (n^i);
-    }
+
+void solve(){
+    int x,m;
+    cin >> x >> m;
+
     int ans = 0;
-    for(int i = 1; i <= 1e9; i++){
-        if(i<=m && i != m && i)
+
+    for(int i = 1; i <= min((x << 1),m); i++){
+        int z = x^i;
+        if(z != 0 && (x%z == 0 || i%z == 0)) ans++;
     }
-    
-    cout << nl;
+
+    cout << ans << nl;
 }
 
 signed main(){
@@ -31,7 +43,7 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while(t--){
         solve();
     }

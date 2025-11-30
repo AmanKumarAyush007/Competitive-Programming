@@ -1,105 +1,120 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <map>
-#include <algorithm>
-#include <queue>
-#include <cmath>
-
+#include<bits/stdc++.h>
 using namespace std;
 
-const long long INF = 1e18;
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+#define debug(x...)
+#endif
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              LLONG_MAX
+#define hell             LLONG_MIN
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-void solve() {
-    int n;
-    long long q;
-    cin >> n >> q;
+map<string, string> unlinked;
 
-    // Adjacency list for our graph: {neighbor_node, edge_weight}
-    vector<vector<pair<int, int>>> adj(n);
-    map<char, vector<int>> cities_by_color;
+void solve(){
+    int n,m;
+    cin >> n >> m;
 
-    for (int i = 0; i < n; ++i) {
+    map<string, vector<int>> mp;
+    vector<string> v(n+1);
+
+
+    for(int i = 1; i <= n; i++){
         string s;
         cin >> s;
-        cities_by_color[s[0]].push_back(i);
-        cities_by_color[s[1]].push_back(i);
+        v[i] = s;
+        mp[s].pb(i);
     }
 
-    // Build the sparse graph
-    for (auto const& [color, cities] : cities_by_color) {
-        // Sorting is not strictly needed as we read in order, but good practice
-        // sort(cities.begin(), cities.end()); // Cities are already sorted by index
-        for (size_t i = 0; i < cities.size(); ++i) {
-            if (i > 0) {
-                int u = cities[i-1];
-                int v = cities[i];
-                int weight = abs(u - v);
-                adj[u].push_back({v, weight});
-                adj[v].push_back({u, weight});
-            }
-        }
-    }
 
-    for (int k = 0; k < q; ++k) {
-        int start_node, end_node;
-        cin >> start_node >> end_node;
-        --start_node; // Use 0-based indexing
-        --end_node;
+    while(m--){
+        int x,y;
+        cin >> x >> y;
 
-        if (start_node == end_node) {
-            cout << 0 << "\n";
+        if(x > y) swap(x,y);
+
+        if(unlinked[v[x]] != v[y]){
+            cout << abs(x-y) << nl;
             continue;
         }
 
-        // Dijkstra's Algorithm for each query
-        vector<long long> dist(n, INF);
-        // Priority queue stores {cost, node}. Use negative cost for min-heap behavior.
-        priority_queue<pair<long long, int>> pq;
+        bool ck = false;
 
-        dist[start_node] = 0;
-        pq.push({0, start_node});
-
-        long long result = -1;
-
-        while (!pq.empty()) {
-            long long d = -pq.top().first;
-            int u = pq.top().second;
-            pq.pop();
-
-            if (u == end_node) {
-                result = d;
-                break;
-            }
-
-            // If we found a shorter path already, skip
-            if (d > dist[u]) {
-                continue;
-            }
-
-            // Relax edges for neighbors
-            for (auto const& edge : adj[u]) {
-                int v = edge.first;
-                int weight = edge.second;
-                if (dist[u] + weight < dist[v]) {
-                    dist[v] = dist[u] + weight;
-                    pq.push({-dist[v], v});
+        for(auto &[a,b] : mp){
+            if(a != v[x] && a != v[y]){
+                auto it = upper_bound(all(b),x);
+                if((it != b.end()) && (*it < y)){
+                    cout << abs(x-y) << nl;
+                    ck = true;
+                    break;
                 }
             }
         }
-        cout << result << "\n";
+
+        if(ck) continue;
+
+        int ans = -1;
+
+        for(auto &[a,b] : mp){
+            if(a != v[x] && a != v[y]){
+                auto it = lower_bound(all(b),x);
+                if((it != b.begin())){
+                    int mid = *prev(it);
+                    int val = 2*(abs(mid - x)) + abs(x-y);
+                    if(ans != -1) ans = min(ans,val);
+                    else ans = val;
+                }
+            }
+        }
+
+
+        for(auto &[a,b] : mp){
+            if(a != v[x] && a != v[y]){
+                auto it = upper_bound(all(b),y);
+                if(it != b.end()){
+                    int mid = *(it);
+                    int val = 2*(abs(mid - y)) + abs(x-y);
+                    if(ans != -1) ans = min(ans,val);
+                    else ans = val;
+                }
+            }
+        }
+
+        cout << ans << nl;
     }
 }
 
-int main() {
+signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int t;
+    int t = 1;
     cin >> t;
-    while (t--) {
+
+    unlinked["BG"] = "RY";
+    unlinked["RY"] = "BG";
+
+    unlinked["BR"] = "GY";
+    unlinked["GY"] = "BR";
+
+    unlinked["BY"] = "GR";
+    unlinked["GR"] = "BY";
+
+    while(t--){
         solve();
     }
-
     return 0;
 }

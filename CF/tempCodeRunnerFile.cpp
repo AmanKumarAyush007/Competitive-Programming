@@ -1,48 +1,74 @@
-#include<bits/stdc++.h>
-#include <atcoder/modint>
+#include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 
-#define int              int64_t
-#define ff               first
-#define ss               second
-#define pb               push_back
-#define inf              LLONG_MAX
-#define hell             LLONG_MIN
-#define nl               '\n'
-#define all(a)           (a).begin(),(a).end()
-#define rall(a)          (a).rbegin(),(a).rend()
-#define sm(v)            accumulate(all(v),0LL)
-#define inp(v)           for(auto& x : v) cin >> x;
-#define setbit(x)        __builtin_popcountll(x)
-#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
-#define prefixsum(a)     partial_sum(all(a), (a).begin());
-#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
+int curr = 0;
+int n,m;
+int sx,sy,ex,ey;
 
-
-#ifndef ONLINE_JUDGE
-#include "debug.h" 
-#else
-  #define debug(x...)
-#endif
-
-using mint = modint7;
-
-void solve(){
-    mint a = 10;
-    cout << a.val();
+void dfs(int x, int y, int dx, int dy, vector<vector<bool>> &vis){
+    cerr << x << y;
     
-    cout << nl;
-}
-
-signed main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int t = 1;
-    cin >> t;
-    while(t--){
-        solve();
+    vis[x][y] = 1;
+    
+    int diffx = (x == 1 ? n - x : x - 1);
+    int diffy = (y == 1 ? n-y : y - 1);
+    
+    int nx = x + dx*(min(diffx,diffy));
+    int ny = y + dy*(min(diffx,diffy));
+    
+    if(vis[nx][ny]) {
+        curr = -1;
+        return;
     }
-    return 0;
+    
+    
+    int p = x, q = y;
+    
+    while(p != nx && q != ny){
+        if(p == ex && q == ey) return;
+        p += dx;
+        q += dy;
+    }
+    
+    
+    
+    if(x == n && y == m) dfs(nx,ny,-dx,-dy,vis);
+    else if(x == n && y == 1) dfs(nx,ny,-dx,-dy,vis);
+    else if(x == 1 && y == m) dfs(nx,ny,-dx,-dy,vis);
+    else if(x == 1 && y == 1) dfs(nx,ny,-dx,-dy,vis);
+    else{
+        if(diffx <= diffy) dfs(nx,ny,-dx,dy,vis);
+        else dfs(nx,ny,dx,-dy,vis);
+    }
+    
+    if(curr != -1) curr++;
+    
 }
+
+int main() {
+	int t;
+	cin >> t;
+	
+	while(t--){
+	    cin >> n >> m;
+	    cin >> sx >> sy >> ex >> ey;
+	    
+	    string s;
+	    cin >> s;
+	    
+	    vector<vector<bool>> vis(n+1, vector<bool>(m+1, false));
+        
+        if(s == "DR") dfs(sx,sy,-1,1,vis);
+        else if(s == "DL") dfs(sx,sy,-1,-1,vis);
+        else if(s == "UR") dfs(sx,sy,1,1,vis);
+        else dfs(sx,sy,1,-1,vis);
+	   
+	   
+	   cout << curr;
+	    
+	}
+
+}
+
+
+
