@@ -10,8 +10,7 @@ using namespace std;
 #define ff               first
 #define ss               second
 #define pb               push_back
-#define inf              LLONG_MAX
-#define hell             LLONG_MIN
+#define inf              (int)1e18
 #define nl               '\n'
 #define all(a)           (a).begin(),(a).end()
 #define rall(a)          (a).rbegin(),(a).rend()
@@ -27,12 +26,22 @@ using namespace std;
 void solve(){
     int n,k;
     cin >> n >> k;
+
     string s;
     cin >> s;
+
+    int lst = -inf;
+
+    int ans = 0;
+
     for(int i = 0; i < n; i++){
-        int len = min(n,k - (i+1));
-        string sb = s.substr(0,k);
+        if(s[i] == '1') {
+            if(i - lst > k-1) ans++;
+            lst = i;
+        }
+        debug(ans,lst);
     }
+
     cout << ans << nl;
 }
 
