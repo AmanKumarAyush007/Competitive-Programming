@@ -24,8 +24,38 @@ using namespace std;
 
 
 void solve(){
-    cout << "Sdfioan";
-    cout << nl;
+    int n, m;
+    cin >> n >> m;
+    vector<int> a(n), c(n);
+    inp(a);
+    inp(c);
+
+    map<int,int> mp;
+    for(int i = 0; i < n; i++){
+        mp[a[i]] = c[i];
+    }
+
+
+    int ans = 0;
+
+    for(auto &[x,y] : mp){
+        int cnt = y;
+        int cnt1 = (mp.count(x+1) ? mp[x+1] : 0);
+
+        int k1 = min(cnt, m/x);
+
+        int rem = m - x*k1;
+
+        int k2 = min(cnt1, rem/(x+1));
+        
+        int ex = m - (k1*x + k2*(x+1));
+
+        int p = min({ex, k1, cnt1 - k2});
+
+        ans = max(ans, (k1 - p)*x + (k2 + p)*(x+1));
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){
