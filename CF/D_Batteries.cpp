@@ -11,7 +11,7 @@ using namespace std;
 #define ss               second
 #define pb               push_back
 #define inf              (int)1e18
-#define nl               '\n'
+#define nl               endl
 #define all(a)           (a).begin(),(a).end()
 #define rall(a)          (a).rbegin(),(a).rend()
 #define sm(v)            accumulate(all(v),0LL)
@@ -26,25 +26,15 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    for(int a = 1; a <= n; a++){
+        for(int i = 1; i <= n; i++){
+            cout << i << " " << (i+a > n ? (i+a - n) : i+a) << nl;
+            int res;
+            cin >> res;
+            if(res == 1) return;
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
-
-    for(auto &i : v) cout << i << " ";
     cout << nl;
 }
 

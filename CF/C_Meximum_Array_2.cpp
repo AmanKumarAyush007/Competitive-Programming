@@ -21,30 +21,54 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-
+using pi = pair<int,int>;
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n,k,q;
+    cin >> n >> k >> q;
 
-    int curr = n;
+    vector<bool> o(n, 0), to(n,0);
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+
+    map<int,vector<pi>> mp;
+    while(q--){
+        int t, l, r;
+        cin >> t >> l >> r;
+        l--, r--;
+        mp[t].pb({l,r});
+        if(t == 1){
+            for(int i = l; i <= r; i++){
+                o[i] = 1;
+            }
         }
         else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+            for(int i = l; i <= r; i++){
+                to[i] = 1;
+            }
         }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
+    vector<int> ans(n,k);
+
+    if(mp[1].size() == 0){
+        for(int i = 0; i < n; i++){
+            ans[i] = i % k;
+        }
+    }
+    else if(mp[2].size()){
+        for(int i = 0; i < n; i++){
+            if(to[i] && o[i]) ans[i] = k+1;
+        }
+
+        for(auto &[a,b] : mp[2]){
+            for(int i = a; i <= b; i++){
+                if(ans[i] == k+1) continue;
+                ans[i] = i % k;
+            }
+        }
+    }
+
+    for(auto &i : ans) cout << i << " ";
     cout << nl;
 }
 

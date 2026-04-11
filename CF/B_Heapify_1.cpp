@@ -29,23 +29,30 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    map<int,int> can;
+    for(int i = 1; i <= n; i++){
+        if(!can.count(i)){
+            int j = i;
+            while(j <= n){
+                can[j] = i;
+                j *= 2;
+            }
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    map<int,int> mp;
+    for(int i = 0; i < n; i++){
+        mp[v[i]] = i+1;
+    }
+
+    for(int i = 1; i <= n; i++){
+        if(can[mp[i]] != can[i]){
+            cout << "NO\n";
+            return;
+        }
+    }
+
+    cout << "YES\n";
 }
 
 signed main(){

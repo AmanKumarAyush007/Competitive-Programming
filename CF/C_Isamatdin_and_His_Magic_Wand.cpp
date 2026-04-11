@@ -29,20 +29,14 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    bool o = 0, e = 0;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    for(auto &i : v) {
+        if(i&1) o = 1;
+        else e = 1;
     }
+
+    if(o && e) sort(all(v));
 
     for(auto &i : v) cout << i << " ";
     cout << nl;

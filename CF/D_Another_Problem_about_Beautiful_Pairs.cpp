@@ -26,26 +26,32 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
-
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    vector<int> a(n+1);
+    for(int i = 1; i <= n; i++){
+        cin >> a[i];
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    int B = sqrt(n);
+    int ans = 0;
+
+    for(int b = 0; b <= B; b++){
+        for(int j = 1; j <= n; j++){
+            int i = j - b*a[j];
+            if(i >= 0 && a[i] == b) ans++;
+        }
+    }
+
+    for(int i = 1; i <= n; i++){
+        if(a[i] > B){
+            for(int k = 1; ; k++){
+                int j = i + k*a[i];
+                if(j > n) break;
+                if(a[j] == k) ans++;
+            }
+        }
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){

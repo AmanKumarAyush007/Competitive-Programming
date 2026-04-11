@@ -24,28 +24,25 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int x;
+    cin >> x;
 
-    int curr = n;
+    auto digsum = [&](int x) {
+        int sum = 0;
+        while (x > 0) {
+            sum += x % 10;
+            x /= 10;
+        }
+        return sum;
+    };
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    int ans = 0;
+
+    for(int i = 1; i <= 200; i++){
+        if(i == digsum(x+i)) ans++;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    cout << ans << nl;
 }
 
 signed main(){

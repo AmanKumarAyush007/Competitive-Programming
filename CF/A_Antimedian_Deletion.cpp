@@ -28,23 +28,12 @@ void solve(){
     cin >> n;
     vector<int> v(n);
     inp(v);
-
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    if(n == 1) cout << 1;
+    else {
+        for(int i = 0; i < n; i++){
+            cout << 2 << " ";
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
-
-    for(auto &i : v) cout << i << " ";
     cout << nl;
 }
 

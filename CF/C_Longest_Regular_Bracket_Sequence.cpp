@@ -24,28 +24,31 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    string s;
+    cin >> s;
 
-    int curr = n;
+    int n = s.size();
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    vector<int> dp(n, 0);
+
+    for(int i = 1; i < n; i++){
+        if(s[i] == ')'){
+            int j = i - dp[i-1] - 1;
+            if(j >= 0 && s[j] == '('){
+                dp[i] = dp[i-1] + 2;     
+                if(j-1 >= 0) dp[i] += dp[j-1];
+            }
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+
+    int mx = *max_element(all(dp));
+    int cnt = 0;
+    for(auto &i : dp) if(i == mx) cnt++;
+
+    if(mx == 0) cnt = 1;
+
+    cout << mx << " " << cnt << nl;
 }
 
 signed main(){
@@ -53,7 +56,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

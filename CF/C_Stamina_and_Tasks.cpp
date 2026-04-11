@@ -26,26 +26,24 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    int curr = n;
+    vector<double> c(n);
+    vector<double> f(n);
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        int x,y;
+        cin >> x >> y;
+        c[i] = x;
+        f[i] = 1.0 - y/100.0;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    vector<double> dp(n+1, 0.0);  // dp[i] -> if we start from i and end at n-1 i.e. [i, n-1] range, then what would be the max points can get. Therefore dp[0] is the final ans;
+
+    for(int i = n-1; i >= 0; i--){
+        dp[i] = max(dp[i+1], c[i] + f[i]*dp[i+1]);
+    }
+
+    cout << fixed << setprecision(10) << dp[0] << nl;
 }
 
 signed main(){

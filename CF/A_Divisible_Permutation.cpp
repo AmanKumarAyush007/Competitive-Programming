@@ -26,27 +26,30 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
-
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    vector<int> a(n);
+    if(n & 1){
+        int st = (n+1)/2;
+        a[0] = st;
+        for(int i = 1; i < n-1; i++){
+            if(i&1) a[i] = a[i-1] - i;
+            else a[i] = a[i-1] + i;
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+        a[n-1] = n;
+    }
+    else{
+        int st = n/2;
+        a[0] = st;
+        for(int i = 1; i < n; i++){
+            if(i&1) a[i] = a[i-1] + i;
+            else a[i] = a[i-1] - i;
         }
-        
+        a[n-1] = n;
     }
 
-    for(auto &i : v) cout << i << " ";
+    for(auto &i : a) cout << i << " ";
     cout << nl;
 }
+
 
 signed main(){
     ios_base::sync_with_stdio(false);

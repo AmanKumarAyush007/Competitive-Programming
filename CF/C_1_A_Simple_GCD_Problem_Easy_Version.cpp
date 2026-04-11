@@ -26,26 +26,33 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    int curr = n;
+    vector<int> a(n), b(n);
+    inp(a);
+    inp(b); 
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    if(n == 1){
+        cout << 0 << nl;
+        return;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    vector<int> g(n-1);
+    for(int i = 0; i < n-1; i++){
+        g[i] = gcd(a[i], a[i+1]);
+    }
+
+    int ans = 0;
+
+    if(g[0] < a[0]) ans++;
+
+    for(int i = 1; i < n-1; i++){
+        int l = (g[i-1] / gcd(g[i-1], g[i])) * g[i]; 
+        if(l < a[i]) ans++;
+    }
+
+    if(g[n-2] < a[n-1]) ans++;
+
+    cout << ans << nl;
 }
 
 signed main(){

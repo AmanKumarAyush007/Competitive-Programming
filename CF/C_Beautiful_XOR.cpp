@@ -24,28 +24,38 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
-
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    int a,b;
+    cin >> a >> b;
+    if(lg(a) < lg(b)) cout << -1 << nl;
+    else{
+        vector<int> ans;
+        for(int i = 31; i >= 0; i--){
+            if(b & (1LL << i)){
+                if((a & (1LL << i)) == 0) {
+                    a |= (1LL << i);
+                    ans.pb(1LL << i);
+                }
+            }
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+
+        for(int i = 0; i < 32; i++){
+            if(a & (1LL << i)){
+                if((b & (1LL << i)) == 0) {
+                    a ^= (1LL << i);
+                    ans.pb(1LL << i);
+                }
+            }
         }
-        
+
+        if(a != b){
+            cout << -1 << nl;
+            return;
+        }
+
+        cout << ans.size() << nl;
+        for(auto &i : ans) cout << i << " ";
+        if(ans.size()) cout << nl;
     }
-
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
 }
 
 signed main(){

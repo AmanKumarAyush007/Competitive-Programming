@@ -11,7 +11,7 @@ using namespace std;
 #define ss               second
 #define pb               push_back
 #define inf              (int)1e18
-#define nl               '\n'
+#define nl               endl
 #define all(a)           (a).begin(),(a).end()
 #define rall(a)          (a).rbegin(),(a).rend()
 #define sm(v)            accumulate(all(v),0LL)
@@ -26,25 +26,47 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    int curr = n;
+    vector<int> ans(2*n+1, -1);
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    set<int> uni;
+    uni.insert(1);
+
+    auto query = [&](int x){
+        cout << "? " << " " << uni.size() + 1 << " ";
+        for(auto &i : uni) cout << i << " ";
+        cout << x  << nl;
+
+        int res;
+        cin >> res;
+
+        if(res == 0){
+            uni.insert(x);
         }
         else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+            ans[x] = res;
         }
-        
+
+    };
+
+    for(int i = 2; i <= 2*n; i++){
+        query(i);
     }
 
-    for(auto &i : v) cout << i << " ";
+    uni.clear();
+
+    for(int i = 1; i <= 2*n; i++){
+        if(ans[i] != -1) uni.insert(i);
+    }
+
+    for(int i = 1; i <= 2*n; i++){
+        if(ans[i] == -1) query(i);
+    }
+
+    cout << "! " << nl;
+    for(int i = 1; i <= 2*n; i++){
+        cout << ans[i] << " ";
+    }
     cout << nl;
 }
 

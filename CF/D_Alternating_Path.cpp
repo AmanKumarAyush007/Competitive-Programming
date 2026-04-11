@@ -21,31 +21,57 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+vector<int> col;
+vector<bool> vis;
+vector<vector<int>> adj;
 
+int c1 = 0, c2 = 0;
 
-void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+bool bipart(int x, int color = 1){
+    vis[x] = 1;
+    col[x] = color;
+    
+    if(color) c1++;
+    else c2++;
 
-    int curr = n;
+    bool res = true;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    for(auto u : adj[x]){
+        if(!vis[u]){
+            if(!bipart(u, !color)) res = false;
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        else if(col[u] == col[x]) res = false;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    return res;
+}
+
+void solve(){
+    int n, m;
+    cin >> n >> m;
+
+    col.assign(n, -1);
+    vis.assign(n, 0);
+    adj.assign(n, {});
+
+    for(int i = 0; i < m; i++){
+        int x, y;
+        cin >> x >> y;
+        x--, y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+
+    int ans = 0;
+
+    for(int i = 0; i < n; i++){
+        c1 = 0, c2 = 0;
+        if(!vis[i] && bipart(i)){
+            ans += max(c1,c2);
+        }
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){

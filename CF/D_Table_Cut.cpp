@@ -24,27 +24,56 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n,m;
+    cin >> n >> m;
+    int grid[n][m];
 
-    int curr = n;
+    int tot = 0;
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+        for(int j = 0; j < m; j++){
+            cin >> grid[i][j];
+            tot += grid[i][j];
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
+    int suff[n][m];
+    for(int j = 0; j < m; j++){
+        suff[n-1][j] = grid[n-1][j];
+        for(int i = n-2; i >= 0; i--){
+            suff[i][j] = suff[i+1][j] + grid[i][j];
+        }
+    }
+
+
+    int req = tot/2;
+
+    cout << req * (tot-req) << nl;
+
+    int r = 0; int c = 0;
+
+    while(r < n && c < m){
+        while(c < m && suff[r][c] <= req){
+            req -= suff[r][c];
+            cout << 'R';
+            c++;
+        }
+        while(r < n && suff[r][c] > req) {
+            cout << "D";
+            r++;
+        }
+    }
+
+    while(r<n) {
+        cout << 'D';
+        r++;
+    }
+
+    while(c < m){
+        cout << 'R';
+        c++;
+    }
+
     cout << nl;
 }
 

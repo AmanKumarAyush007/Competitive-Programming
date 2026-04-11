@@ -26,28 +26,43 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
+    string s;
+    cin >> s;
 
-    int curr = n;
+    int ones = count(s.begin(), s.end(), '1');
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    if(ones == 0){
+        cout << (n + 2)/3 << nl;  
+        return;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
-}
+    int ans = ones;
 
+    for(int i = 0; i < n; ){
+        if(s[i] == '0'){
+            int j = i;
+            while(j < n && s[j] == '0') j++;
+
+            int k = j - i;
+
+            bool left  = (i-1 >= 0 && s[i-1] == '1');
+            bool right = (j < n && s[j] == '1');
+
+            if(left && right){
+                ans += k / 3;
+            }
+            else{
+                ans += k / 3;
+                if((k%3 == 2)) ans++;
+            }
+
+            i = j;
+        }
+        else i++;
+    }
+
+    cout << ans << nl;
+}
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);

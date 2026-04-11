@@ -29,20 +29,9 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    int ind = max_element(all(v)) - v.begin();
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
+    swap(v[0], v[ind]);
 
     for(auto &i : v) cout << i << " ";
     cout << nl;

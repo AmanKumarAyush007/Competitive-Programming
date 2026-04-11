@@ -29,23 +29,13 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    int mx = *max_element(all(v));
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
+    int ans = 0;
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    for(auto &i : v) if(i == mx) ans++;
+
+    cout << ans << nl;
 }
 
 signed main(){

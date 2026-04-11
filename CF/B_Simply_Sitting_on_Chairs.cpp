@@ -28,24 +28,14 @@ void solve(){
     cin >> n;
     vector<int> v(n);
     inp(v);
-
-    int curr = n;
+    
+    int ans = 0;
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        if(v[i] <= i+1) ans++;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    cout << ans << nl;
 }
 
 signed main(){

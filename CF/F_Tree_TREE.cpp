@@ -21,31 +21,52 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+vector<vector<int>> tree;
+vector<int> dp, subtree;
+int n,k;
 
+void dfs(int x, int par = -1){
+    for(auto &node : tree[x]){
+        if(node != par){
+            dfs(node,x);
+            subtree[x] += subtree[node];
+            dp[x] += dp[node];
+        }
+    }
+    dp[x] += (subtree[x] >= k);
+}
+
+void rec(int x, int par = -1){
+    for(auto &node : tree[x]){
+        if(node != par){
+            int diff = 0;
+            if(n - subtree[node] < k) diff--;
+            if(subtree[node] < k) diff++;
+            dp[node] = dp[x] + diff;
+            rec(node,x);
+        }
+    }
+}
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    cin >> n >> k;
 
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    dp.assign(n,0);
+    subtree.assign(n,1);
+    tree.assign(n,{});
+    for(int i = 0; i < n-1; i++){
+        int u,v;
+        cin >> u >> v;
+        u--, v--;
+        tree[u].pb(v);
+        tree[v].pb(u);
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    dfs(0);
+    rec(0);
+
+    int ans = sm(dp);
+    cout << ans << nl;
 }
 
 signed main(){

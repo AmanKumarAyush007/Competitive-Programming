@@ -24,28 +24,55 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n,m, q;
+    cin >> n >> m >> q;
 
-    int curr = n;
+    vector<int> a(n), b(m);
+    inp(a);
+    inp(b);
 
+    sort(rall(a));
+    sort(rall(b));
+
+    vector<int> pa(n+1), pb(m+1);
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        pa[i+1] = pa[i] + a[i];
+    }
+    for(int i = 0; i < m; i++){
+        pb[i+1] = pb[i] + b[i];
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+
+    vector<pair<int,int>> vp(n+m+1);
+
+    int l = 0, r = 0;
+
+    for(int i = 1; i < n+m+1; i++){
+        if(l < n && r < m){
+            if(a[l] < b[r]) r++;
+            else l++;
+        }
+        else if(l == n) r++;
+        else if(r == m) l++;
+
+        vp[i] = {l,r};
+    }
+
+
+    while(q--){
+        int x,y,z;
+        cin >> x >> y >> z;
+
+        auto [A, B] = vp[z];
+
+        int ans = 0;
+
+        if(A > x) ans = pa[x] + pb[z - x];
+        else if(B > y) ans = pa[z-y] + pb[y];
+        else ans = pa[A] + pb[B];
+
+        cout << ans << nl;
+    }
 }
 
 signed main(){

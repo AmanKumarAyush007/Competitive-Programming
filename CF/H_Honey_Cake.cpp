@@ -24,28 +24,23 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int w,h,d, n;
+    cin >> w >> h >> d >> n;
 
-    int curr = n;
+    w = gcd(n,w);
+    n /= w;
+    w--;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
+    h = gcd(h,n);
+    n /= h;
+    h--;
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    d = gcd(d,n);
+    n /= d;
+    d--;
+
+    if(n == 1) cout << w << " " << h << " " << d << nl;
+    else cout << -1 << nl;
 }
 
 signed main(){
@@ -53,7 +48,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

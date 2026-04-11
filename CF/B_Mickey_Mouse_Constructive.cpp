@@ -21,36 +21,40 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+const int N = 200000 + 5;
+int divisors[N];
 
+void precompute() {
+    for(int i = 1; i < N; i++) {
+        for(int j = i; j < N; j += i) {
+            divisors[j]++;
+        }
+    }
+}
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int x,y;
+    cin >> x >> y;
 
-    int curr = n;
+    int ans = (x == y ? 1 : divisors[abs(x-y)]);
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    cout << ans << nl;
+    
+
+    for(int i = 0; i < x; i++){
+        cout << 1 << " ";
     }
-
-    for(auto &i : v) cout << i << " ";
+    for(int i = 0; i < y; i++){
+        cout << -1 << " ";
+    }
     cout << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+    precompute();
 
     int t = 1;
     cin >> t;

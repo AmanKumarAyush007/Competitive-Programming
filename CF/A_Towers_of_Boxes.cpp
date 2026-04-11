@@ -24,28 +24,11 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
-
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
-
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    int n, m, d;
+    cin >> n >> m >> d;
+    int cap = d/m + 1;
+    int ans = n / cap + (n%cap != 0);
+    cout << ans << nl;
 }
 
 signed main(){

@@ -26,26 +26,33 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
-
+    vector<pair<int,int>> vp(n);
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        vp[i] = {v[i], i+1};
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    int sz = n;
+
+    sort(all(vp));
+
+    reverse(all(vp));
+    int ans = 0;
+
+    for(int i = 0; i < n; i++){
+        if(sz <= 0) break;
+
+        if(vp[i].ss > sz) continue;
+
+        ans++;
+        sz = vp[i].ss - 1;
+    }
+
+    // debug(vp);
+    cout << ans << nl;
 }
 
 signed main(){

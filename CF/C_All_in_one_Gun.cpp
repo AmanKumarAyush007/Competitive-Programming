@@ -24,28 +24,47 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n, h, k;
+    cin >> n >> h >> k;
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    int ans = 0;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    int tot = sm(v);
+
+
+    if(tot <= h){
+        ans += n*(h/tot) + (h/tot - (h % tot == 0))*k;
+        h -= tot * (h/tot);
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+
+    if(h <= 0){
+        cout << ans << nl;
+        return;
+    }
+
+    vector<int> pre = v;
+    prefixsum(pre);
+
+    vector<int> premn = v, suffmx = v;
+    for(int i = 1; i < n; i++){
+        premn[i] = min(premn[i-1],premn[i]);
+    }
+    for(int i = n-2; i >= 0; i--){
+        suffmx[i] = max(suffmx[i+1],suffmx[i]);
+    }
+    
+
+    for(int i = 0; i < n; i++){
+        if(pre[i] >= h || (pre[i] + (suffmx[i+1] - premn[i])) >= h) {
+            ans += i+1;
+            break;
+        }
+    }
+
+    cout << ans  << nl;
 }
 
 signed main(){

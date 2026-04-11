@@ -6,7 +6,7 @@ using namespace std;
 #else
 #define debug(x...)
 #endif
-#define int              int64_t
+// #define int              int64_t
 #define ff               first
 #define ss               second
 #define pb               push_back
@@ -21,31 +21,47 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+vector<vector<int>> adj;
+vector<vector<int>> dp;
+int n, k;
+long long ans = 0;
 
+void dfs(int x, int par = -1){
+    dp[x][0] = 1;
+
+    for(auto neigh : adj[x]){
+        if(neigh == par) continue;
+
+        dfs(neigh, x);
+
+        for(int i = 0; i < k; i++){
+            ans += (long long) dp[x][k - i - 1] * dp[neigh][i];
+        }
+
+        for(int d = 1; d <= k; d++){
+            dp[x][d] += dp[neigh][d-1];
+        }
+    }
+}
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    cin >> n >> k;
 
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
+    adj.assign(n, {});
+    dp.assign(n+5, vector<int>(k+5, 0));
+    
+    for(int i = 0; i < n-1; i++){
+        int u,v;
+        cin >> u >> v;
+        u--, v--;
         
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
+    
+    dfs(0);
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    cout << ans << nl;
 }
 
 signed main(){
@@ -53,7 +69,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

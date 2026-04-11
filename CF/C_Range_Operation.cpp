@@ -29,23 +29,25 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    int tot = sm(v);
+    int ans = tot;
+    int pre = 0;
+
+    auto f = [&](int x, int sm){
+        return x*x + x - sm;
+    };
+
+    int mn = 0;
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
+        pre += v[i];
+        int val = f(i+1,pre);
         
+        ans = max(ans, tot + val - mn);
+        mn = min(mn, val);
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    cout << ans << nl;
 }
 
 signed main(){

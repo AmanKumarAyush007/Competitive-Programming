@@ -26,26 +26,17 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
-
-    int curr = n;
-
+    bool fnd = 0;
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        int x;
+        cin >> x;
+        if(x == 67) fnd = 1;
     }
-
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    if(fnd) {
+        cout << "YES\n";
+        return;
+    }
+    cout << "NO" << nl;
 }
 
 signed main(){

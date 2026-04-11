@@ -24,28 +24,22 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int x,y;
+    cin >> x >> y;
 
-    int curr = n;
+    if(x&1) x -= 3;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    if((x - 2*y) % 6 != 0){
+        cout << "NO\n";
     }
+    else{
+        int k3 = (x - 2*y)/6;
+        int k1 = y + k3;
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+        if(k1 >= 0 && k3 >= 0) cout << "YES\n";
+        else cout << "NO\n";
+    }
+    // cout << nl;
 }
 
 signed main(){

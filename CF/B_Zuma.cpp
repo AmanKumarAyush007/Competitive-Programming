@@ -21,31 +21,37 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+int n;
+int a[505];
+int dp[505][505];
 
+int rec(int i, int j){
+    if(i == j) return 1;
+    if(j < i) return 0;
+    if(j == i+1 && a[i] == a[j]) return 1;
+    
+    if(dp[i][j] != -1) return dp[i][j];
 
-void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    dp[i][j] = inf;
 
-    int curr = n;
+    if(a[i] == a[j]) dp[i][j] = rec(i+1, j-1);
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    for(int k = i; k < j; k++){
+        dp[i][j] = min(dp[i][j], rec(i, k) + rec(k+1, j));
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    return dp[i][j];
+}
+
+void solve(){
+    cin >> n;
+    for(int i = 0; i < n; i++){
+        cin >> a[i];
+    }
+
+    memset(dp, -1, sizeof(dp));
+    
+    cout << rec(0, n-1) << nl;
 }
 
 signed main(){
@@ -53,7 +59,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

@@ -27,23 +27,8 @@ void solve(){
     int n;
     cin >> n;
     vector<int> v(n);
-    inp(v);
-
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
-
+    iota(all(v),1);
+    reverse(all(v));
     for(auto &i : v) cout << i << " ";
     cout << nl;
 }

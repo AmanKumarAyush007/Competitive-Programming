@@ -21,7 +21,7 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-
+const int mod = 998244353;
 
 void solve(){
     int n;
@@ -29,23 +29,42 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    int ans = 0;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    for(int i = 0; i <= 32; i++){
+        int w = (1LL << i);
+
+        int toton = 0;
+        int totoff = 0;
+        int cnton = 0;
+        int cntoff = 0;
+
+        int val = 0;
+
+        for(int j = 0; j < n; j++){
+            int bit = (w & v[j]);
+
+            if(bit == 0){
+                cntoff++;
+            }
+            else{
+                swap(totoff, toton);
+                swap(cntoff, cnton);
+                cnton++;
+            }
+
+            totoff += cntoff;
+            toton += cnton;
+
+            val += toton % mod;
+            val %= mod;
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+
+        ans += (val*w) % mod;
+        ans %= mod;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    cout << ans << nl;
 }
 
 signed main(){
@@ -53,7 +72,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

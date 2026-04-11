@@ -24,27 +24,48 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n,m;
+    cin >> n >> m;
 
-    int curr = n;
+    vector<int> tot(26,0);
+
+    vector<vector<int>> req(n, vector<int>(26,0));
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+        string s;
+        cin >> s;
+        for(auto &ch : s) {
+            req[i][ch - 'A']++;
+            tot[ch - 'A']++;
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
+    for(int i = 0; i < n; i++){
+        int ans = m;
+        auto need = req[i];
+
+        auto extra = tot;
+
+        for(int j = 0; j < 26; j++){
+            extra[j] -= need[j];
+        }
+
+        for(int j = 0; j < 26; j++){
+            if(tot[j]==0) continue;
+            if(extra[j] == 0){
+                ans = -1;
+                break;
+            }
+            if((m*extra[j] - need[j]) < 0){
+                ans = -1;
+                break;
+            }
+            ans = min(ans, (m*extra[j] - need[j])/extra[j]);
+        }
+
+        cout << ans << " ";
+    }
+
     cout << nl;
 }
 
@@ -53,7 +74,6 @@ signed main(){
     cin.tie(NULL);
 
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

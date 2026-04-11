@@ -24,28 +24,27 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n , x,y;
+    cin >> n >> x >> y;
 
-    int curr = n;
+    vector<int> a(n);
+    inp(a);
+
+    vector<int> can(n);
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        can[i] = a[i] / x;
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    int tot = sm(can);
+
+    int ans = 0;
+
+    for(int i = 0; i < n; i++){
+        ans = max(ans, a[i] + (tot - a[i]/x)*y);
+    }
+
+    cout << ans << nl;
 }
 
 signed main(){

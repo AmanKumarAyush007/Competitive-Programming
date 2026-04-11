@@ -21,30 +21,45 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+vector<vector<int>> adj;
+vector<pair<int,int>> topo;
+vector<bool> vis;
+
+void dfs(int x = 0){
+    vis[x] = 1;
+
+    for(auto u : adj[x]){
+        if(!vis[u]){
+            topo.pb({x,u});
+            dfs(u);
+        }
+    }
+}
 
 
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    int curr = n;
+    adj.resize(n, {});
+    vis.resize(n, false);
+    topo.clear();
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+        string s;
+        cin >> s;
+        for(int j = 0; j < n; j++){
+            bool x = s[j] - '0';
+            if(x) adj[i].pb(j);
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
+    dfs();
+
+    // reverse(all(topo));
+
+    debug(topo);
+
     cout << nl;
 }
 

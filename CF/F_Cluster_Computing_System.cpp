@@ -22,38 +22,38 @@ using namespace std;
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
-
 void solve(){
     int n;
     cin >> n;
+
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    vector<int> pre = v, suff = v;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    for(int i = 1; i < n; i++){
+        pre[i] = gcd(pre[i-1],v[i]);
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    for(int i = n-2; i >= 0; i--){
+        suff[i] = gcd(suff[i+1],v[i]);
+    }
+
+    int ans = 0;
+
+    for(int i = 0; i < n-1; i++){
+        ans += min(suff[i],pre[i]);
+    }
+    
+    cout << ans << nl;
 }
 
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
+
     int t = 1;
-    cin >> t;
     while(t--){
         solve();
     }

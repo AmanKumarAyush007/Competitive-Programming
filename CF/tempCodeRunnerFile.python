@@ -1,4 +1,7 @@
-def f(a, b, n = 8):
-    return a * (n - b + 1)
+def print_bitmask(num, bits=32):
+    for i in range(bits - 1, -1, -1):
+        print((num >> i) & 1, end='')
+    print()
 
-print(7+12+15+16+15+12+7+5+8+9+8+5+3+4+3+1)
+
+print_bitmask(321)

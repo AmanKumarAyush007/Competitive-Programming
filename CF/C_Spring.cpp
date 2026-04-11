@@ -24,28 +24,30 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n, a, b, c;
+    cin >> a >> b >> c >> n;
 
-    int curr = n;
+    int A = n/a, B = n/b, C = n/c;
+    int AB = n/lcm(a,b), BC = n/lcm(b,c), AC = n/lcm(a,c);
+    int ABC = n/lcm(a, lcm(b,c));
+    
+    AB -= ABC;
+    BC -= ABC;
+    AC -= ABC;
+    
+    A -= AB + AC + ABC;
+    B -= BC + AB + ABC;
+    C -= AC + BC + ABC;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
+    auto f = [&](int x, int y, int z){
+        return (x*6 + y*3 + z*2);
+    };
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    int ansA = f(A, AB+AC, ABC);
+    int ansB = f(B, BC + AB, ABC);
+    int ansC = f(C, AC+BC, ABC);
+
+    cout << ansA << " " << ansB << " " << ansC << nl;
 }
 
 signed main(){

@@ -29,23 +29,27 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    stack<int> st;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
+    vector<pair<int,int>> ans;
+
+    for(int i = n-1; i >= 0; i--){
+        if(st.empty() || st.top() < v[i]) st.push(v[i]);
         else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+            int big = st.top();
+            while(st.size() && st.top() > v[i]){
+                ans.pb({st.top(),v[i]});
+                st.pop();
+            }
+            st.push(big);
         }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    if(st.size() > 1) cout << "No\n";
+    else{
+        cout << "Yes\n";
+        for(auto &[a,b] : ans) cout << a << " " << b << nl;
+    }
 }
 
 signed main(){

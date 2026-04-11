@@ -21,31 +21,35 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+vector<int> f(int n) {
+    vector<int> req;
 
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            req.pb(i);     
+            while (n % i == 0) {
+                n /= i;              
+            }
+        }
+    }
+
+    if (n > 1) {
+        req.pb(n);
+    }
+
+    return req;
+}
 
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    int curr = n;
+    vector<int> v = f(n);
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
-    }
-
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    int ans = 1;
+    for(auto &i : v) ans *= i;
+    
+    cout << ans << nl;
 }
 
 signed main(){

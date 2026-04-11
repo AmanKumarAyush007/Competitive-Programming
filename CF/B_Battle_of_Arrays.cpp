@@ -24,27 +24,51 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    inp(v);
+    int n,m;
+    cin >> n >> m;
 
-    int curr = n;
-
+    multiset<int> a,b;
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+        int x;
+        cin >> x;
+        a.insert(x);
+    }
+    for(int i = 0; i < m; i++){
+        int x;
+        cin >> x;
+        b.insert(x);
     }
 
-    for(auto &i : v) cout << i << " ";
+    bool turn = 1;
+
+    while(true){
+        int alst = *prev(a.end());
+        int blst = *prev(b.end());
+        if(turn&1){
+            b.erase(prev(b.end()));
+            if(blst > alst){
+                b.insert(blst - alst);
+            }
+        }
+        else{
+            a.erase(prev(a.end()));
+            if(alst > blst){
+                a.insert(alst - blst);
+            }
+        }
+
+        turn ^= 1;
+
+        if(a.size() && b.size()){
+            continue;
+        }
+        else {
+            cout << (turn ? "Bob" : "Alice");
+            break;
+        }
+    }
+
+
     cout << nl;
 }
 

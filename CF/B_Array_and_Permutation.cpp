@@ -26,25 +26,38 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
+    vector<int> p(n), a(n);
+    inp(p);
+    inp(a);
 
-    int curr = n;
-
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    vector<int> st;
+    map<int,bool> fnd;
+    for(auto &i : a){
+        if(st.size() == 0){
+            st.pb(i);
+            fnd[i] = 1;
         }
         else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+            if(fnd.count(i)){
+                if(st.back() != i){
+                    cout << "NO\n";
+                    return;
+                }
+            }
+            else {
+                st.pb(i);
+                fnd[i] = 1;
+            }
         }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
+    vector<int> chk;
+
+    for(auto &i : p) if(fnd.count(i)) chk.pb(i);
+
+    if(chk == st) cout << "YES";
+    else cout << "NO";
+
     cout << nl;
 }
 

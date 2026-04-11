@@ -26,26 +26,23 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
+    string s;
+    cin >> s;
 
-    int curr = n;
+    stack<char> st;
 
     for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+        if(st.size() == 0){
+            st.push(s[i]);
         }
         else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+            if(st.top() == s[i]) st.pop();
+            else st.push(s[i]);
         }
-        
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    
+    cout << (st.size() ? "NO" : "YES") << nl;
 }
 
 signed main(){

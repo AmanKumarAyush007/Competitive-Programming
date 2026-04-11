@@ -29,23 +29,35 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    stack<int> st;
+    int ans = 0;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
+    for(int i = 0; i < n; i++) {
+
+        if(st.empty()) {
+            ans++;
+            st.push(v[i]);
         }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
+        else {
+            if(v[i] > st.top() + 1) {
+                while(!st.empty()) st.pop();
+                ans++;
+                st.push(v[i]);
+            }
+            else{
+                while(!st.empty() && v[i] <= st.top())
+                    st.pop();
+    
+                if(st.empty()) ans++;
+    
+                st.push(v[i]);
+            }
         }
-        
+    
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+
+    cout << ans << nl;
 }
 
 signed main(){

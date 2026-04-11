@@ -24,28 +24,57 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n, l, r;
+    cin >> n >> l >> r;
+
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    sort(all(v));
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    int ans = 0;
+
+    vector<int> pre = v;
+    vector<int> suff = v;
+
+    prefixsum(pre);
+    suffixsum(suff);
+
+    auto f = [&](int x, int i){
+        int left = i+1;
+        int right = n - (i+1);
+
+        int presm = (i >= 0 ? left*x - pre[i] : 0);
+        int suffsm = (i+1 < n ? suff[i+1] - right*x : 0);
+
+        return (presm + suffsm);
+    };
+
+    auto g = [&](int x, int i){
+        int left = i;
+        int right = n - (i+1);
+
+        int presm = (i-1 >= 0 ? left*x - pre[i-1] : 0);
+        int suffsm = (i+1 < n ? suff[i+1] - right*x : 0);
+
+        return (presm + suffsm);
+    };
+
+
+    // no zero taken
+    for(int i = -1; i < n; i++){
+        int val = min(f(l,i), f(r,i));
+        ans = max(ans, val);
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    //one zero taken
+    for(int i = 0; i < n; i++){
+        int val = min(g(l,i), g(r,i));
+        ans = max(ans, val);
+    }
+
+    
+    cout << ans << nl;
 }
 
 signed main(){

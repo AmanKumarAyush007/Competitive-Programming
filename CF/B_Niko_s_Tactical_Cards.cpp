@@ -26,26 +26,24 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
+    vector<int> a(n), b(n);
+    inp(a);
+    inp(b);
 
-    int curr = n;
+    int mn = min(-a[0],b[0]);
+    int mx = max(-a[0],b[0]);
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    for(int i = 1; i < n; i++){
+        int c1 = mn - a[i];
+        int c2 = mx - a[i];
+        int c3 = b[i] - mn;
+        int c4 = b[i] - mx;
+
+        mx = max({c1,c2,c3,c4});
+        mn = min({c1,c2,c3,c4});
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    cout << mx << nl;
 }
 
 signed main(){

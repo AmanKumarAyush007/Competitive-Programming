@@ -29,23 +29,24 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    int curr = n;
+    vector<int> pre = v,suff = v;
 
-    for(int i = 0; i < n; i++){
-        if(v[i] == curr){
-            curr--;
-            continue;
-        }
-        else{
-            int ind = find(v.begin(), v.end(), curr) - v.begin();
-            reverse(v.begin() + i, v.begin() + ind + 1);
-            break;
-        }
-        
+    for(int i = 1; i < n; i++){
+        pre[i] = min(pre[i],pre[i-1]);
     }
 
-    for(auto &i : v) cout << i << " ";
-    cout << nl;
+    for(int i = n-2; i >= 0; i--){
+        suff[i] = max(suff[i+1], suff[i]);
+    }
+
+    for(int i = 0; i < n-1; i++){
+        if(pre[i] > suff[i+1]){
+            cout << "No\n";
+            return;
+        }
+    }
+
+    cout << "Yes\n";
 }
 
 signed main(){
