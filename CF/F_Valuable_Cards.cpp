@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-#include<cassert>
 using namespace std;
 
 #ifndef ONLINE_JUDGE
@@ -46,6 +45,7 @@ void solve(){
     int ans = 0;
 
     for(auto &i : v){
+
         if(divisors[m].count(i)){
             if(!st.empty()){
                 vector<int> temp;
@@ -74,7 +74,7 @@ void solve(){
         }
     }
 
-    if(ans == 0|| st.size()) ans++;
+    if(ans == 0 || st.size()) ans++;
 
     cout << ans << nl;
 }
