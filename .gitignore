@@ -1,0 +1,13 @@
+# Compiled files
+*.exe
+*.out
+
+# VS Code temp files
+tempCodeRunnerFile.*
+
+# CP Helper files
+.cph/
+*.prob
+
+# Logs
+*.log
