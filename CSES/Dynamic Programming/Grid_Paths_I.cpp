@@ -24,7 +24,6 @@ void solve(){
         for(auto &el : i) cin >> el;
     }
 
-    vector<int> dp()
 
 
     cout << nl;
