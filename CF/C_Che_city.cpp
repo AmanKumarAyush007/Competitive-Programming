@@ -26,34 +26,23 @@ using namespace std;
 void solve(){
     int n,k;
     cin >> n >> k;
+
     vector<int> v(n);
     inp(v);
 
-    int sum = sm(v);
 
-    int rep = (k - 1) / sum;
-    k -= rep * sum;
-    
-    int ans = inf;
-    int ind = 0;
+    int ans = 0;
+    int j = 0;
 
     for(int i = 0; i < n; i++){
-        int curr = 0;
-        for(int j = 0; j < n; j++){
-            curr += v[(i+j) % n];
-            if(curr >= k){
-                if(j+1 < ans) {
-                    ans = j+1;
-                    ind = i+1;
-                }
-                break;
-            }
+        while(j < n && v[j] - v[i] <= k){
+            j++;
         }
+
+        ans += (n-j);
     }
 
-    ans += n*(rep);
-
-    cout << ind << " " << ans << nl;
+    cout << ans << nl;
 }
 
 signed main(){
