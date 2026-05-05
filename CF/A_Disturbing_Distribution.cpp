@@ -24,16 +24,19 @@ using namespace std;
 
 
 void solve(){
-    string s;
-    cin >> s;
+    int n;
+    cin >> n;
+     
+    vector<int> v(n);
+    inp(v);
 
-    string od, ev;
-    for(auto &i : s)  if(i%2) od += i; else ev += i;
+    int cnt = count(all(v),1);
+    int ans = sm(v) - cnt;
 
-    merge(all(od), all(ev), s.begin());
-    cout << s << nl;
+    if(ans == 0 || v[n-1] == 1) ans++;
+    cout <<ans << nl;
 }
-            
+
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);

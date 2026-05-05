@@ -21,19 +21,65 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-
+vector<int> pre(1e6+5, 0);
 
 void solve(){
-    string s;
-    cin >> s;
+    int n;
+    cin >> n;
 
-    string od, ev;
-    for(auto &i : s)  if(i%2) od += i; else ev += i;
+    vector<int> v(n);
+    inp(v);
 
-    merge(all(od), all(ev), s.begin());
-    cout << s << nl;
+    map<int,int> mp;
+
+    
+    for(int i = 0; i <= n; i++){
+        pre[i] = 0;
+    }
+    
+    
+    for(auto &i : v){
+        mp[i]++;
+        if(i == 0) {
+            continue;
+        }
+        int ind = (i-1)/2;
+        pre[ind+1]--;
+    }
+    
+    pre[0] = n - mp[0];
+
+    for(int i = 1; i <= n; i++){
+        pre[i] += pre[i-1];
+    }
+
+    // for(int i = 0; i <= n; i++){
+    //     cout << pre[i] << " ";
+    // }
+    // cout << endl;
+
+
+    int ans = 0;
+
+    for(int i = 0; i <= n; i++){
+        // debug(pre[i]);
+        if(i == 0 && mp[i]){
+            ans = i;
+            continue;
+        }
+        if(pre[i] == 0){
+            if(mp[i] == 0) break;
+            else {
+                ans = i+1;
+                mp[i]--;
+            }
+        } 
+        else ans = i;
+    }
+    
+    cout << ans << nl;
 }
-            
+
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);

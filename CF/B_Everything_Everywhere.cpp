@@ -24,16 +24,26 @@ using namespace std;
 
 
 void solve(){
-    string s;
-    cin >> s;
+    int n;
+    cin >> n;
 
-    string od, ev;
-    for(auto &i : s)  if(i%2) od += i; else ev += i;
+    vector<int> v(n);
+    inp(v);
+    
+    int ans = 0;
 
-    merge(all(od), all(ev), s.begin());
-    cout << s << nl;
+    for(int i = 0; i < n-1; i++){
+        if(abs(v[i] - v[i+1]) == gcd(v[i], v[i+1])) ans++;
+        else{
+            int mx = max(v[i], v[i+1]);
+            int mn = min(v[i], v[i+1]);
+
+            if(mx%mn == 0 && mx/mn == 2) ans++;
+        }
+    }
+    cout << ans << nl;
 }
-            
+
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
