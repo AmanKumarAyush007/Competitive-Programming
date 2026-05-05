@@ -1,35 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define int        int64_t
-#define ff         first
-#define ss         second
-#define pb         push_back
-#define inf        LLONG_MAX
-#define hell       LLONG_MIN
-#define nl         '\n'
-#define all(a)     (a).begin(),(a).end()
-#define sm(v)      accumulate(all(v),0LL)
-#define inp(v)     for(auto& x : v) cin >> x;
-#define setbit(x)  __builtin_popcountll(x)
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+#define debug(x...)
+#endif
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              (int)1e18
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
-void solve() {
+
+void solve(){
     int n;
     cin >> n;
+
     vector<int> v(n);
-    for (int i = 0; i < n; i++) {
-        cin >> v[i];
-    }
-    vector<int> dp(n+1, 1);
-    for (int j = 1; j <= n; j++) {
-        for (int k = 2*j; k <= n; k += j) {
-            if (v[j-1] < v[k-1]) {
-                dp[k] = max(dp[k], dp[j] + 1);
-            }
+    inp(v);
+
+    vector<int> dp(n+1,1);
+    // dp[i]: max number of increasing subsequence till index i
+
+    for(int i = 1; i <= n; i++){
+        for(int j = i*2; j <= n; j += i){
+            if(v[i-1] < v[j-1]) dp[j] = max(1+dp[i], dp[j]);
         }
     }
-    cout << *max_element(dp.begin()+1, dp.end()) << '\n';
+
+    cout << *max_element(all(dp)) << nl;
 }
 
 signed main(){
