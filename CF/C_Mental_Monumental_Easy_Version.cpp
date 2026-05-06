@@ -21,7 +21,7 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-vector<int> pre(1e6+5, 0);
+
 
 void solve(){
     int n;
@@ -30,53 +30,38 @@ void solve(){
     vector<int> v(n);
     inp(v);
 
-    map<int,int> mp;
+    sort(all(v));
+
+    auto check = [&](int x){
+        multiset<int> ms(all(v));
+
+        for(int i = x; i >= 0; i--){
+            if(ms.count(i)) ms.erase(ms.find(i));
+            else{
+                auto it = ms.lower_bound(2*i+1);
+                if(it == ms.end()) return false;
+                else ms.erase(it);
+            }
+        }  
+
+        return true;
+    };
 
     
-    for(int i = 0; i <= n; i++){
-        pre[i] = 0;
-    }
-    
-    
-    for(auto &i : v){
-        mp[i]++;
-        if(i == 0) {
-            continue;
-        }
-        int ind = (i-1)/2;
-        pre[ind+1]--;
-    }
-    
-    pre[0] = n - mp[0];
-
-    for(int i = 1; i <= n; i++){
-        pre[i] += pre[i-1];
-    }
-
-    // for(int i = 0; i <= n; i++){
-    //     cout << pre[i] << " ";
-    // }
-    // cout << endl;
-
-
+    int hi = n+10, lo = 0;
     int ans = 0;
 
-    for(int i = 0; i <= n; i++){
-        // debug(pre[i]);
-        if(i == 0 && mp[i]){
-            ans = i;
-            continue;
+    while(hi >= lo){
+        int mid = (hi+lo)/2;
+
+        if(check(mid)){
+            ans = mid + 1;
+            lo = mid+1;
         }
-        if(pre[i] == 0){
-            if(mp[i] == 0) break;
-            else {
-                ans = i+1;
-                mp[i]--;
-            }
-        } 
-        else ans = i;
+        else hi = mid - 1;
     }
-    
+
+
     cout << ans << nl;
 }
 
