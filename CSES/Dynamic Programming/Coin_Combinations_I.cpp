@@ -78,13 +78,36 @@ void solve2(){
 }
 
 
+void practice(){
+    int n,x;
+    cin >> n >> x;
+
+    vector<int> v(n);
+    inp(v);
+
+    vector<int> dp(x+1,0);
+    dp[0] = 1;
+
+    for(int i = 1; i <= x; i++){
+        for(auto &coin : v){
+            if(i - coin >= 0){
+                dp[i] += dp[i - coin];
+                dp[i] %= mod;
+            }
+        }
+    }
+
+    cout << dp[x] << nl;
+}
+
+
 signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
     int t = 1;
     while(t--){
-        solve2();
+        practice();
     }
     return 0;
 }
