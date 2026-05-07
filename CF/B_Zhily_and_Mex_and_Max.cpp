@@ -35,15 +35,34 @@ void solve(){
     int mex = 0;
     while(s.count(mex)) mex++;
 
-    int mx = *max_element(all(v));
+    multiset<int> ms(all(v));
 
-    int ans = 0;
+    vector<int> a;
 
-    for(int i = 0; i <= mex; i++){
-        int mex_part = (i * (i + 1)) / 2 + (n - i) * i;
-        int max_part = (i * (i - 1)) / 2 + (n - i) * mx;
+    a.pb(*prev(ms.end()));
+    ms.erase(prev(ms.end()));
 
-        ans = max(ans, mex_part + max_part);
+    for(int i = 0; i < mex; i++){
+        a.pb(i);
+        auto it = ms.find(i);
+        if(it != ms.end()) ms.erase(it);
+        else break;
+    }
+
+    while(ms.size()) {
+        a.pb(*ms.begin());
+        ms.erase(ms.begin());
+    }
+
+    int ans = (*max_element(all(a))) * n;
+    
+    s.clear();
+    mex = 0;
+
+    for(int i = 0; i < n; i++){
+        s.insert(a[i]);
+        while(s.count(mex)) mex++;
+        ans += mex;
     }
 
     cout << ans << nl;
