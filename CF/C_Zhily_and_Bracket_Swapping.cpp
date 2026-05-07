@@ -67,10 +67,8 @@ void solve(){
     }
 
 
-    if(bala == 0 && balb == 0)
-        cout << "YES\n";
-    else
-        cout << "NO\n";
+    if(bala == 0 && balb == 0) cout << "YES\n";
+    else cout << "NO\n";
 }
 
 signed main(){
