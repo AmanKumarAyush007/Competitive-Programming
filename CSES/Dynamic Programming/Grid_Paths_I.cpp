@@ -14,6 +14,8 @@ using namespace std;
 #define setbit(x)  __builtin_popcountll(x)
 
 
+const int mod = 1e9+7;
+
 void solve(){
     int n;
     cin >> n;
@@ -24,9 +26,25 @@ void solve(){
         for(auto &el : i) cin >> el;
     }
 
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+
+    dp[0][0] = (grid[0][0] == '.');
+
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(i+1 < n && grid[i+1][j] != '*'){
+                dp[i+1][j] += dp[i][j];
+                dp[i+1][j] %= mod;
+            }
+            if(j+1 < n && grid[i][j+1] != '*'){
+                dp[i][j+1] += dp[i][j];
+                dp[i][j+1] %= mod;
+            }
+        }
+    }
 
 
-    cout << nl;
+    cout << dp[n-1][n-1] << nl;
 }
 
 signed main(){

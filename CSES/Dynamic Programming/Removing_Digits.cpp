@@ -19,12 +19,11 @@ void solve(){
     cin >> n;
     vector<int> dp(n+1,1e9);
     dp[0] = 0;
-    
+
     for(int i = 1; i <= n; i++){
         string s = to_string(i);
         for(auto &c : s){
-            int dig = c - '0';
-            if(dig != 0) dp[i] = min(dp[i-dig]+1,dp[i]);
+            dp[i] = min(dp[i - (c - '0')] + 1, dp[i]);
         }
     }
     
