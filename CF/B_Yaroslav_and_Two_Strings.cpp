@@ -27,7 +27,7 @@ int dp[N][2][2];
 int n;
 string s, t;
 
-int rec(int i, bool x, bool y){
+int rec(int i, bool x = 0, bool y = 0){
     if(i >= n) return x&y;
 
     if(dp[i][x][y] != -1) return dp[i][x][y];
@@ -67,7 +67,7 @@ void solve(){
 
     memset(dp, -1, sizeof(dp));
 
-    cout << rec(0,0,0) << nl;
+    cout << rec(0) << nl;
 }
 
 signed main(){
