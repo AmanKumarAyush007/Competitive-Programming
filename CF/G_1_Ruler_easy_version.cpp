@@ -11,7 +11,7 @@ using namespace std;
 #define ss               second
 #define pb               push_back
 #define inf              (int)1e18
-#define nl               '\n'
+#define nl               endl
 #define all(a)           (a).begin(),(a).end()
 #define rall(a)          (a).rbegin(),(a).rend()
 #define sm(v)            accumulate(all(v),0LL)
@@ -21,41 +21,33 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-int n;
-vector<int> v;
-vector<vector<int>> tree;
-
-int dfs(int x){
-    int val = inf;
-
-    for(auto &i : tree[x]){
-        val = min(dfs(i), val);
-    }
-
-    if(x == 0) return v[x] + val;
-
-    if(val == inf) return v[x];
-
-    if(v[x] >= val) return min(v[x], val);
-    else return (v[x] + val)/2;
+int ask(int x, int y){
+    cout << "? " << x << " " << y << nl;
+    int res;
+    cin >> res;
+    return res;
 }
 
 void solve(){
-    cin >> n;
-    v.assign(n, 0);
-    tree.assign(n, {});
+    int ans = 1;
+    int hi = 1000, lo = 1;
 
-    inp(v);
+    while(hi >= lo){
+        int mid = (lo+hi)/2;
 
-    tree.resize(n,{});
-    for(int i = 1; i < n; i++){
-        int x;
-        cin >> x;
-        x--;
-        tree[x].pb(i);
+        int val = ask(mid, mid+1);
+
+        if(val == mid*(mid+1)){
+            lo = mid + 1;
+        }
+        else if(val == (mid+2)*(mid+1)) hi = mid - 1;
+        else {
+            cout << "! " << mid+1 << nl;
+            return;
+        }
     }
 
-    cout << dfs(0) << nl;
+    cout << ans << nl;
 }
 
 signed main(){

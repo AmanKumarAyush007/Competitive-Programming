@@ -21,41 +21,30 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-int n;
-vector<int> v;
-vector<vector<int>> tree;
 
-int dfs(int x){
-    int val = inf;
-
-    for(auto &i : tree[x]){
-        val = min(dfs(i), val);
-    }
-
-    if(x == 0) return v[x] + val;
-
-    if(val == inf) return v[x];
-
-    if(v[x] >= val) return min(v[x], val);
-    else return (v[x] + val)/2;
-}
 
 void solve(){
+    int n;
     cin >> n;
-    v.assign(n, 0);
-    tree.assign(n, {});
 
+    vector<int> v(2*n);
     inp(v);
 
-    tree.resize(n,{});
-    for(int i = 1; i < n; i++){
-        int x;
-        cin >> x;
-        x--;
-        tree[x].pb(i);
+    sort(all(v));
+
+    int ex = v[2*n-1] + v[0];
+
+    for(int i = 2; i < (2*n)-1; i += 2){
+        ex += v[i] - v[i-1];
     }
 
-    cout << dfs(0) << nl;
+    int t = v.back();
+    v.pop_back();
+    v.pb(ex);
+    v.pb(t);
+
+    for(auto &i : v) cout << i << " ";
+    cout << nl;
 }
 
 signed main(){

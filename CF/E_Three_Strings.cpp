@@ -21,41 +21,37 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
-int n;
-vector<int> v;
-vector<vector<int>> tree;
 
-int dfs(int x){
-    int val = inf;
-
-    for(auto &i : tree[x]){
-        val = min(dfs(i), val);
-    }
-
-    if(x == 0) return v[x] + val;
-
-    if(val == inf) return v[x];
-
-    if(v[x] >= val) return min(v[x], val);
-    else return (v[x] + val)/2;
-}
 
 void solve(){
-    cin >> n;
-    v.assign(n, 0);
-    tree.assign(n, {});
+    string a,b,c;
+    cin >> a >> b >> c;
 
-    inp(v);
+    int n = a.size();
+    int m = b.size();
 
-    tree.resize(n,{});
-    for(int i = 1; i < n; i++){
-        int x;
-        cin >> x;
-        x--;
-        tree[x].pb(i);
+    vector<vector<int>> dp(n+5, vector<int> (m+5, 1e9));
+    dp[0][0] = 0;
+
+
+    for(int i = 1; i <= n; i++){
+        dp[i][0] = dp[i-1][0] + (a[i-1] != c[i-1]);
+    }
+    for(int j = 1; j <= m; j++){
+        dp[0][j] = dp[0][j-1] + (b[j-1] != c[j-1]);
+    }
+    
+
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            dp[i][j] = min(
+                dp[i-1][j] + (a[i-1] != c[i+j-1]),
+                dp[i][j-1] + (b[j-1] != c[i+j-1])
+            );
+        }
     }
 
-    cout << dfs(0) << nl;
+    cout << dp[n][m] << nl;
 }
 
 signed main(){
