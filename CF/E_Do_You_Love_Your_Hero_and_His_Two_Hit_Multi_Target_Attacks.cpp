@@ -22,8 +22,6 @@ using namespace std;
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
-using pr = pair<int,int>;
-
 
 void solve(){
     int n;
