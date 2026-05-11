@@ -24,6 +24,7 @@ using namespace std;
 
 using pr = pair<int,int>;
 
+
 void solve(){
     int n;
     cin >> n;
