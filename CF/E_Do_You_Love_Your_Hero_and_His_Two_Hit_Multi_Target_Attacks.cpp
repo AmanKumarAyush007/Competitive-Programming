@@ -18,6 +18,8 @@ using namespace std;
 #define inp(v)           for(auto& x : v) cin >> x;
 #define setbit(x)        __builtin_popcountll(x)
 #define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
 
