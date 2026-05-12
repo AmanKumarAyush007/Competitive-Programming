@@ -10,8 +10,7 @@ using namespace std;
 #define ff               first
 #define ss               second
 #define pb               push_back
-#define inf              LLONG_MAX
-#define hell             LLONG_MIN
+#define inf              (int)1e18
 #define nl               '\n'
 #define all(a)           (a).begin(),(a).end()
 #define rall(a)          (a).rbegin(),(a).rend()
@@ -23,40 +22,62 @@ using namespace std;
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
-
 void solve(){
     int n;
     cin >> n;
-    vector<int> v(n);
-    inp(v);
 
-    sort(all(v));
+    map<int,int> mp;
+    for(int i = 0; i < n; i++){
+        int x;
+        cin >> x;
+        mp[x]++;
+    }
+
+    int cnt = 0;
+    int tot = 0;
 
 
-    int ans = 0;
-    
-    for (int i = 0; i < n; i++){
-        map<int,int> mp;
-        int s = 0;
-        for (int j = i; j < n; j++){
-            s += v[j];
-            mp[v[j]]++;
-    
-            int len = j - i + 1;
-            if (len < 3) continue;
-    
-            int x1 = v[i], x2 = v[i+1], y = v[j];
-            if (x1 + x2 <= y) continue;
-    
-            int o = 0;
-            for (auto &[a,b] : mp) if (b % 2) o++;
-            if (o >= 3) continue;
-    
-            ans = max(ans, s);
+    for(auto &[a,b] : mp){
+        tot += a * (b - (b%2));
+        cnt += (b - (b%2));
+        b = b%2;
+    }
+
+    vector<int> rem;
+    for(auto &[a,b] : mp) if(b) rem.pb(a);
+
+
+    if(rem.size() == 1){
+        if(tot > rem[0]){
+            cnt++;
+            tot += rem[0];
+        }
+    }
+    else if(rem.size() > 1){
+        reverse(all(rem));
+
+        bool taken = 0;
+        for(int i = 0; i < rem.size() - 1; i++){
+            if(rem[i] - rem[i+1] < tot){
+                tot += rem[i] + rem[i+1];
+                taken = 1;
+                cnt += 2;
+                break;
+            }
+        }
+        if(!taken){
+            for(int i = 0; i < rem.size(); i++){
+                if(rem[i] < tot){
+                    tot += rem[i];
+                    cnt++;
+                    break;
+                }
+            }
         }
     }
 
-    cout << max(ans,0LL) << nl;
+    if(cnt > 2) cout << tot << nl;
+    else cout << 0 << nl;
 }
 
 signed main(){
