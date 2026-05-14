@@ -28,22 +28,37 @@ void solve(){
     int l, r;
     cin >> l >> r;
 
-    int n = r - r + 1;
+    int n = r - l + 1;
 
-    set<int> st;
+    map<int,int> mp;
+    int curr = lg(r);
+    int hi = 1LL << curr;
+    int lo = hi - 1;
 
-    for(int i = l; i <= r; i++) st.insert(i);
 
-    vector<int> v(n);
-
-    int curr = r;
-    for(int i = n-1; i >= 0; i--){
-        v[i] = r;
-        r--;
+    while(true){
+        while(hi <= r){
+            mp[hi] = lo;
+            mp[lo] = hi;
+            lo--, hi++;
+        }
+        r = lo;
+        if(r <= 0) break;
+        hi = 1LL << lg(r);
+        lo = hi - 1;
     }
 
-    
+    if(!mp.count(0)) mp[0] = 0;
+
+    int ans = 0;
+
+    cout << n*(n-1) << nl;
+    for(int i = 0; i < n; i++){
+        cout << mp[i] << " ";
+        ans += i|mp[i];
+    }
     cout << nl;
+    assert(ans == n*(n-1));
 }
 
 signed main(){
