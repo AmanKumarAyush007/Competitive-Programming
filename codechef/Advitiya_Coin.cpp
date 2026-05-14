@@ -33,6 +33,7 @@ void solve(){
     // low  -> increasing prices
     // high -> decreasing prices
 
+    
     dp[0] = 0;
 
     for(int i=1;i<=n;i++){
