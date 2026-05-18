@@ -21,53 +21,56 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+const int mod = 1e9 + 7;
+vector<vector<int>> adj;
+vector<int> dp;
 
-void solve() {
+
+void dfs(int node = 1){
+
+    for(auto &i : adj[node]){
+        dfs(i);
+        dp[node] += (2 + dp[i]) % mod;
+        dp[node] %= mod;
+    }
+}
+
+void rec(int node = 1, int par = 0){
+    
+    dp[node] += (1 + dp[par]) % mod;
+    dp[node] %= mod;
+
+    for(auto &i : adj[node]){
+        rec(i, node);
+    }
+}
+
+
+void solve(){
     int n;
     cin >> n;
 
-    vector<vector<int>> adj(n + 1);
-    vector<int> deg(n + 1);
+    adj.assign(n+1, {});
+    dp.assign(n+1,0);
 
-    for(int i = 0; i < n - 1; i++) {
-        int u, v;
-        cin >> u >> v;
-
-        adj[u].pb(v);
-        adj[v].pb(u);
-
-        deg[u]++;
-        deg[v]++;
+    adj[0].pb(1);
+    for(int i = 1; i <= n; i++){
+        int x,y;
+        cin >> x >> y;
+        
+        if(x) adj[i].pb(x);
+        if(y) adj[i].pb(y);
     }
 
-    if(n == 2) {
-        cout << 0 << nl;
-        return;
+    dfs();
+    rec();
+
+    for(int i = 1; i <= n; i++){
+        cout << dp[i] % mod << " ";
     }
 
-    int leaves = 0;
-
-    for(int i = 1; i <= n; i++) {
-        if(deg[i] == 1)
-            leaves++;
-    }
-
-    int best = 0;
-
-    for(int i = 1; i <= n; i++) {
-        int cnt = 0;
-
-        for(auto v : adj[i]) {
-            if(deg[v] == 1)
-                cnt++;
-        }
-
-        best = max(best, cnt);
-    }
-
-    cout << leaves - best << nl;
+    cout << nl;
 }
-
 
 signed main(){
     ios_base::sync_with_stdio(false);
