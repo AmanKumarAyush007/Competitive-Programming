@@ -24,26 +24,45 @@ using namespace std;
 
 
 void solve(){
-    int n; 
+    int n;
     cin >> n;
 
-    int tot  = 0;
-    vector<int> a(n + 1), b(n + 1), dp(n + 2, n + 1); 
+    vector<int> a(n), b(n);
+    inp(a);
+    inp(b);
 
-    for(int i = 1; i <= n; i++)cin >> a[i];
-    for(int i = 1; i <= n; i++)cin >> b[i];
+    int ans = 0;
 
-    for(int i = n; i >= 1; i--){
-        if(a[i] == b[i]) dp[a[i]] = dp[a[i] + 1];
-        else if(a[i] != b[i]) dp[a[i]] = dp[b[i]] = i;
-        tot += dp[1] - i;
-        debug(dp);
-        debug(dp[1]-i);
+    vector<int> len(n);
+    int prev = -1;
+
+    for(int i = 0; i < n; i++){
+        if(a[i] == 1 || b[i] == 1) prev = i;
+        len[i] = i - prev;
+        ans += len[i];
     }
 
-    cout << tot << "\n";
-}
 
+    vector<int> dp(n+5, n-1);
+
+    for(int i = n-1; i >= 0; i--){
+        if(a[i] == b[i]) {
+            dp[a[i]] = dp[a[i]+1];
+            if(a[i] == 1){
+                int l = (i > 0 ? len[i-1] : 0);
+                int r = 1 + dp[1] - i;
+                ans += r + (l*r);
+            }
+        }
+        else {
+            dp[a[i]] = i-1;
+            dp[b[i]] = i-1;
+        }    
+    }
+
+
+    cout << ans << nl;
+}
 
 signed main(){
     ios_base::sync_with_stdio(false);

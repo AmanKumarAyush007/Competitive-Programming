@@ -1,77 +1,55 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define int long long
+#ifndef ONLINE_JUDGE
+#include "debug.h" 
+#else
+#define debug(x...)
+#endif
+#define int              int64_t
+#define ff               first
+#define ss               second
+#define pb               push_back
+#define inf              (int)1e18
+#define nl               '\n'
+#define all(a)           (a).begin(),(a).end()
+#define rall(a)          (a).rbegin(),(a).rend()
+#define sm(v)            accumulate(all(v),0LL)
+#define inp(v)           for(auto& x : v) cin >> x;
+#define setbit(x)        __builtin_popcountll(x)
+#define lg(x)            (63 - __builtin_clzll(x)) //log base 2
+#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
+
+
 
 void solve(){
     int n, k;
     cin >> n >> k;
 
     vector<int> a(n), b(n);
-    for(auto &x: a) cin >> x;
-    for(auto &x: b) cin >> x;
+    inp(a)
+    inp(b)
 
-    vector<int> freqA(n+1,0), freqB(n+1,0);
+    bool can = 1;
+    set<int> st;
+    int cnt = 0;
+    int ex = 0;
 
-    int bad = 0;
+    
 
-    auto addA = [&](int x){
-        freqA[x]++;
-        if(freqA[x] == freqB[x]) bad--;
-        if(freqA[x] == freqB[x] + 1) bad++;
-    };
 
-    auto removeA = [&](int x){
-        freqA[x]--;
-        if(freqA[x] == freqB[x]) bad--;
-        if(freqA[x] + 1 == freqB[x]) bad++;
-    };
-
-    auto addB = [&](int x){
-        if(x == -1) return;
-        freqB[x]++;
-        if(freqA[x] == freqB[x]) bad--;
-        if(freqA[x] + 1 == freqB[x]) bad++;
-    };
-
-    auto removeB = [&](int x){
-        if(x == -1) return;
-        freqB[x]--;
-        if(freqA[x] == freqB[x]) bad--;
-        if(freqA[x] == freqB[x] + 1) bad++;
-    };
-
-    // first window
-    for(int i = 0; i < k; i++){
-        addA(a[i]);
-        addB(b[i]);
-    }
-
-    if(bad > 0){
-        cout << "NO\n";
-        return;
-    }
-
-    for(int i = k; i < n; i++){
-        removeA(a[i-k]);
-        addA(a[i]);
-
-        removeB(b[i-k]);
-        addB(b[i]);
-
-        if(bad > 0){
-            cout << "NO\n";
-            return;
-        }
-    }
-
-    cout << "YES\n";
+    cout << "YES" << nl;
 }
 
 signed main(){
-    ios::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int t; cin >> t;
-    while(t--) solve();
+    int t = 1;
+    cin >> t;
+    while(t--){
+        solve();
+    }
+    return 0;
 }
