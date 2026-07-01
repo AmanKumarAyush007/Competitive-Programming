@@ -54,7 +54,7 @@ void solve(){
         if(s[i] == '1' && cnt&1){
             cout << "Alice\n";
             return;
-        }        
+        }        x
         if(s[i] == '0') cnt++;
     }
 
