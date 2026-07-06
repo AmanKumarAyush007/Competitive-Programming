@@ -27,20 +27,66 @@ void solve(){
     int n;
     cin >> n;
     
-    vector<int> v(n);
+    vector<int> v(2*n);
     inp(v);
-
-    vector<int> fst(n,-1), lst(n);
-
-    for(int i = 0; i < n; i++){
-        if(fst[v[i]] == -1) fst[v[i]] = i;
-        else lst[v[i]] = i;
-    }
 
     int ans = 1;
 
-    \
-    cout << nl;
+    if(n == 1){
+        cout << ans << nl;
+        return;
+    }
+
+
+    int i = 0, j = (2*n)-1;
+
+    while(i < v.size() && v[i] != 0) i++;
+    while(j >= 0 && v[j] != 0) j--;
+
+    auto pal = [&](int l, int r){
+        while(l <= r && v[l] == v[r]) l++, r--;
+        return (l > r);
+    };
+
+    auto mex = [&](int l, int r){
+        set<int> st;
+        for(int k = l; k <= r; k++){
+            st.insert(v[k]);
+        }
+ 
+        int mx = 0;
+ 
+        for(auto &i : st) {
+            if(i == mx) mx++;
+            else break;
+        }
+ 
+        return mx;
+    };
+
+    auto can = [&](int mid){
+        int cnt = 0;
+        while(mid-cnt >= 0 && mid+cnt<v.size() && v[mid-cnt] == v[mid+cnt]) {
+            cnt++;
+        }
+        return max(0LL,cnt-1);
+    };
+
+
+    if(pal(i,j)) {
+        int l = i, r = j;
+        while(l-1 >= 0 && r+1 < v.size() && v[l-1] == v[r+1]) r++, l--;
+        
+        ans = max(ans, mex(l,r));
+    }
+
+
+    int d = can(i);
+    ans = max(ans, mex(i-d, i+d));
+    d = can(j);
+    ans = max(ans, mex(j-d, j+d));
+
+    cout << ans << nl;
 }
 
 signed main(){
