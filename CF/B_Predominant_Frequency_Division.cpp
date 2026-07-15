@@ -1,3 +1,4 @@
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -21,59 +22,42 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+
+
 void solve(){
-    int n,k;
-    cin >> n >> k;
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b);
+    int n;
+    cin >> n;
 
-    set<int> st;
-    int ex = 0;
+    vector<int> pref1(n , 0), pref2(n , 0);
 
-    for(int i = 0; i < k; i++){
-        if(b[i] == -1){
-            ex++;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+
+        if(i == 0){
+            pref1[i] = (x == 1 ? 1 : 0);
+            pref2[i] = (x == 3 ? 1 : 0);
             continue;
         }
-        if(st.count(b[i])){
-            cout << "NO\n";
+
+        pref1[i] = pref1[i - 1] + (x == 1 ? 1 : 0);
+        pref2[i] = pref2[i - 1] + (x == 3 ? 1 : 0);
+    }
+
+    vector<int> suffmn(n, inf);
+
+    for(int i = n-2; i >= 0; i--){
+        suffmn[i] = min(suffmn[i+1], 2*pref2[i] - i);
+    }
+
+    for(int i = 0; i < n-1; i++){
+        if(2*pref1[i] >= i+1 && 2*pref2[i] - i >= suffmn[i+1]){
+            cout << "YES\n";
             return;
         }
-        st.insert(b[i]);
     }
 
-    int req = 0;
-    for(int i = 0; i < k; i++){
-        if(!st.count(a[i])){
-            req++;
-        }
-    }
-
-    // debug(req,ex);
-
-    if(req > ex) {
-        cout << "NO\n";
-        return;
-    }
-
-
-    for(int i = 0; i < n; i++){
-        // debug(i+k);
-        if(i+k >= n) break;
-        if(a[i] != b[i] && b[i] != -1) {
-            cout << "NO\n";
-            return;
-        }
-        // debug(a[i+k] == b[i+k] , b[i+k] == -1) ;
-        if(a[i+k] != b[i+k] && b[i+k] != -1){
-            cout << "NO\n";
-            return;
-        }
-        
-    }
-
-    cout << "YES" << nl;
+    cout << "NO\n";
 }
 
 signed main(){

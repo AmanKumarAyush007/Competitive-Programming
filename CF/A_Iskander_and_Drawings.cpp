@@ -21,59 +21,24 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+
+
 void solve(){
-    int n,k;
-    cin >> n >> k;
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b);
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
 
-    set<int> st;
-    int ex = 0;
-
-    for(int i = 0; i < k; i++){
-        if(b[i] == -1){
-            ex++;
-            continue;
-        }
-        if(st.count(b[i])){
-            cout << "NO\n";
-            return;
-        }
-        st.insert(b[i]);
-    }
-
-    int req = 0;
-    for(int i = 0; i < k; i++){
-        if(!st.count(a[i])){
-            req++;
-        }
-    }
-
-    // debug(req,ex);
-
-    if(req > ex) {
-        cout << "NO\n";
-        return;
-    }
-
+    int x = 0, cnt = 0;
 
     for(int i = 0; i < n; i++){
-        // debug(i+k);
-        if(i+k >= n) break;
-        if(a[i] != b[i] && b[i] != -1) {
-            cout << "NO\n";
-            return;
-        }
-        // debug(a[i+k] == b[i+k] , b[i+k] == -1) ;
-        if(a[i+k] != b[i+k] && b[i+k] != -1){
-            cout << "NO\n";
-            return;
-        }
-        
+        if(s[i] == '#') x++;
+        else x = 0;
+        cnt = max(x,cnt);
     }
 
-    cout << "YES" << nl;
+
+    cout << (cnt+1)/2 << nl;
 }
 
 signed main(){

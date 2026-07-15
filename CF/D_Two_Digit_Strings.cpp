@@ -21,59 +21,42 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+
+
 void solve(){
-    int n,k;
-    cin >> n >> k;
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b);
+    string a, b;
+    cin >> a >> b;
 
-    set<int> st;
-    int ex = 0;
+    vector<int> pi, pj;
+    for(auto &i : a) pi.pb(i-'0');
+    for(auto &i : b) pj.pb(i-'0');
 
-    for(int i = 0; i < k; i++){
-        if(b[i] == -1){
-            ex++;
-            continue;
-        }
-        if(st.count(b[i])){
-            cout << "NO\n";
-            return;
-        }
-        st.insert(b[i]);
-    }
+    
+    prefixsum(pi);
+    prefixsum(pj);
 
-    int req = 0;
-    for(int i = 0; i < k; i++){
-        if(!st.count(a[i])){
-            req++;
-        }
-    }
+    
+    for(auto &i : pi) i = i%10;
+    for(auto &i : pj) i = i%10;
 
-    // debug(req,ex);
-
-    if(req > ex) {
-        cout << "NO\n";
+    if(pi.back() != pj.back()){
+        cout << -1 << nl;
         return;
     }
 
+    
+    int n = a.size(), m = b.size();
+    int dp[n+1][m+1];
 
-    for(int i = 0; i < n; i++){
-        // debug(i+k);
-        if(i+k >= n) break;
-        if(a[i] != b[i] && b[i] != -1) {
-            cout << "NO\n";
-            return;
+    memset(dp, 0, sizeof(dp));
+
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            if(pi[i-1] == pj[j-1]) dp[i][j] = max(dp[i][j], 1+dp[i-1][j-1]);
         }
-        // debug(a[i+k] == b[i+k] , b[i+k] == -1) ;
-        if(a[i+k] != b[i+k] && b[i+k] != -1){
-            cout << "NO\n";
-            return;
-        }
-        
     }
-
-    cout << "YES" << nl;
+    cout << dp[n][m] << nl;
 }
 
 signed main(){

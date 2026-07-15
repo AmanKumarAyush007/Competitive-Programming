@@ -21,59 +21,32 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+
+
 void solve(){
     int n,k;
     cin >> n >> k;
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b);
 
-    set<int> st;
-    int ex = 0;
+    vector<int> v(n);
+    inp(v);
 
-    for(int i = 0; i < k; i++){
-        if(b[i] == -1){
-            ex++;
-            continue;
-        }
-        if(st.count(b[i])){
-            cout << "NO\n";
-            return;
-        }
-        st.insert(b[i]);
+    vector<int> a(3*n);
+    for(int i = 0; i < 3*n; i++){
+        a[i] = v[i%n];
     }
 
-    int req = 0;
-    for(int i = 0; i < k; i++){
-        if(!st.count(a[i])){
-            req++;
-        }
+    vector<int> pre = a;
+    prefixsum(pre);
+
+    int ans = 0;
+
+    for(int i = n; i < 2*n; i++){
+        int rng = pre[i+k] - pre[i - k - 1] - a[i];
+        int val = 2*k*a[i] - rng;
+        ans += max(0LL, val);
     }
 
-    // debug(req,ex);
-
-    if(req > ex) {
-        cout << "NO\n";
-        return;
-    }
-
-
-    for(int i = 0; i < n; i++){
-        // debug(i+k);
-        if(i+k >= n) break;
-        if(a[i] != b[i] && b[i] != -1) {
-            cout << "NO\n";
-            return;
-        }
-        // debug(a[i+k] == b[i+k] , b[i+k] == -1) ;
-        if(a[i+k] != b[i+k] && b[i+k] != -1){
-            cout << "NO\n";
-            return;
-        }
-        
-    }
-
-    cout << "YES" << nl;
+    cout << ans << nl;
 }
 
 signed main(){

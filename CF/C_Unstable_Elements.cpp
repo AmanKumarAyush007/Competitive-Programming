@@ -21,59 +21,44 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+
+
 void solve(){
     int n,k;
     cin >> n >> k;
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b);
+    vector<int> v(n);
+    inp(v);
 
-    set<int> st;
-    int ex = 0;
+    map<int,int> mp;
+    for(auto &i : v) mp[i]++;
 
-    for(int i = 0; i < k; i++){
-        if(b[i] == -1){
-            ex++;
-            continue;
-        }
-        if(st.count(b[i])){
-            cout << "NO\n";
-            return;
-        }
-        st.insert(b[i]);
-    }
+    multiset<int> ms;
+    for(auto &[x,y] : mp) ms.insert(y);
 
-    int req = 0;
-    for(int i = 0; i < k; i++){
-        if(!st.count(a[i])){
-            req++;
-        }
-    }
-
-    // debug(req,ex);
-
-    if(req > ex) {
-        cout << "NO\n";
-        return;
-    }
-
-
-    for(int i = 0; i < n; i++){
-        // debug(i+k);
-        if(i+k >= n) break;
-        if(a[i] != b[i] && b[i] != -1) {
-            cout << "NO\n";
-            return;
-        }
-        // debug(a[i+k] == b[i+k] , b[i+k] == -1) ;
-        if(a[i+k] != b[i+k] && b[i+k] != -1){
-            cout << "NO\n";
-            return;
-        }
+    
+    int ans = 0;
+    int turn = 0;
+    int sz = sm(ms);
+    
+    int prev = -1;
+    
+    while (!ms.empty()) {
         
+        if (k >= sz && (k - sz) % ms.size() == 0 && prev != ms.size()) {
+            ans++;
+            prev = ms.size();
+        }
+
+        sz -= ms.size();     
+        
+        turn++;
+        
+        while (!ms.empty() && *ms.begin() <= turn)
+        ms.erase(ms.begin());
     }
 
-    cout << "YES" << nl;
+
+    cout << ans << nl;
 }
 
 signed main(){

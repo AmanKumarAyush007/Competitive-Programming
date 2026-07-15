@@ -21,6 +21,9 @@ using namespace std;
 #define prefixsum(a)     partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+
 void solve(){
     int n,k;
     cin >> n >> k;
@@ -28,49 +31,61 @@ void solve(){
     inp(a);
     inp(b);
 
-    set<int> st;
-    int ex = 0;
 
-    for(int i = 0; i < k; i++){
-        if(b[i] == -1){
-            ex++;
-            continue;
-        }
-        if(st.count(b[i])){
+    set<int> st(all(b));
+    vector<int> req;
+
+    for(auto &i : a) if(!st.count(i)) {
+        req.pb(i);
+    }
+
+    int p = 0;
+    for(auto &i : req){
+        while(p < n && b[p] != -1) p++;
+        if(p >= n){
             cout << "NO\n";
             return;
         }
-        st.insert(b[i]);
+        b[p] = i;
     }
 
-    int req = 0;
-    for(int i = 0; i < k; i++){
-        if(!st.count(a[i])){
-            req++;
-        }
-    }
+    st.clear();
+    for(auto &i : b) st.insert(i);
 
-    // debug(req,ex);
-
-    if(req > ex) {
+    if(st.size() != n || *st.begin() != 1 || *st.rbegin() != n){
         cout << "NO\n";
         return;
     }
 
 
-    for(int i = 0; i < n; i++){
-        // debug(i+k);
-        if(i+k >= n) break;
-        if(a[i] != b[i] && b[i] != -1) {
+    vector<uint64_t> H(n + 1);
+    for (int i = 1; i <= n; i++)
+        H[i] = rng();
+
+
+    uint64_t ha = 0, hb = 0;
+
+    for (int i = 0; i < k; i++) {
+        ha += H[a[i]];
+        hb += H[b[i]];
+    }
+
+    if (ha != hb) {
+        cout << "NO\n";
+        return;
+    }
+
+    for (int i = k; i < n; i++) {
+        ha -= H[a[i-k]];
+        hb -= H[b[i-k]];
+    
+        ha += H[a[i]];
+        hb += H[b[i]];
+    
+        if (ha != hb) {
             cout << "NO\n";
             return;
         }
-        // debug(a[i+k] == b[i+k] , b[i+k] == -1) ;
-        if(a[i+k] != b[i+k] && b[i+k] != -1){
-            cout << "NO\n";
-            return;
-        }
-        
     }
 
     cout << "YES" << nl;
