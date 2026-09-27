@@ -24,25 +24,31 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> v(n);
+    inp(v);
+
+    vector<int> bse;
+    int tmp = k;
+    for(int i = 2; i*i <= tmp; i++){
+        if(tmp % i == 0){
+            bse.pb(i);
+            while(tmp % i == 0) tmp /= i;
+        }
+    }
+    if(tmp > 1) bse.pb(tmp);
+
+    map<int,int> mp;
+    for(auto &i : v){
+        for(auto &j : bse){
+            if(gcd(i,j) == j) mp[j] += i;
+        }
+    }
 
     int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
-
+    for(auto &[a,b] : mp) ans = max(ans, b);
 
     cout << ans << nl;
 }

@@ -26,21 +26,61 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
-
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+    string s;
+    cin >> s;
+    
+    if(is_sorted(all(s))){
+        cout << 0 << nl;
+        return;
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+
+    vector<int> prez(n), preo(n), suffo(n), suffz(n);
+    
+    for(int i = 0; i < n; i++){
+        if(s[i] == '0'){
+            prez[i]++;
+            suffz[i]++;
+        }
+        else{
+            preo[i]++;
+            suffo[i]++;
+        } 
+    }
+
+    prefixsum(prez);
+    prefixsum(preo);
+    suffixsum(suffo);
+    suffixsum(suffz);
+
+
+    if(s[0] == '1'){
+        cout << suffz[0] << nl;
+        return;        
+    }
+
+
+
+
+    int ans = inf;
+    bool occ = 0;
+
+    for(int i = 0; i < n; i++){
+        if(s[i] == '1' && !occ) {
+            occ = 1;
+            ans = min(ans, suffz[i]);
+        }
+
+
+
+        if(!occ) ans = min(ans,suffo[i]);   // 1 to 0
+        else{
+            int l = preo[i];
+            int r = (i+1 < n ? min(suffz[i+1], suffo[i+1]) : 0);
+
+
+            ans = min(ans, l+r);
+
+        }
     }
 
 

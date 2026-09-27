@@ -24,23 +24,42 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n,m;
+    cin >> n >> m;
+    
+    vector<int> v(n);
+    vector<vector<int>> mat(n, vector<int>(m));
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
-
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+    inp(v);
+    for(int i = 0; i < n; i++){
+        inp(mat[i]);
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+
+    
+    vector<int> req = v;
+    for(int i = 1; i < n; i++){
+        req[i] = min(req[i], req[i-1]);
+    }
+
+    
+    auto pre = mat;
+    multiset<int,greater<>> ms;
+
+    for(int i = n-1; i >= 0; i--){
+        for(auto &j : mat[i]) ms.insert(j);
+        while(ms.size() > m) ms.erase(prev(ms.end()));
+
+        pre[i] = vector<int>(all(ms));
+
+        prefixsum(pre[i]);
+    }
+
+
+
+    int ans = m;
+    for(int i = 0; i < n; i++){
+        auto it = lower_bound(all(pre[i]), req[i]);
+        if(it != pre[i].end()) ans = min(ans, 1+(it - pre[i].begin()));
     }
 
 

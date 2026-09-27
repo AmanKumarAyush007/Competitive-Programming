@@ -23,28 +23,31 @@ using namespace std;
 
 
 
-void solve(){
-    int n;
-    cin >> n;
+void solve() {
+    int n, m;
+    cin >> n >> m;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> freq(m + 1);
+
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        freq[x]++;
+    }
+
+    vector<int> suff(m + 2);
+
+    for (int x = m; x >= 1; x--) {
+        suff[x] = suff[x + 1] + freq[x];
+    }
 
     int ans = 0;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    for (int x = 1; x <= m; x++) {
+        ans = max(ans, suff[x] + (2 * x <= m ? freq[2 * x] : 0));
     }
 
-
-    cout << ans << nl;
+    cout << ans << '\n';
 }
 
 signed main(){

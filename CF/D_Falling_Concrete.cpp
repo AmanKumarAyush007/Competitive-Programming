@@ -26,23 +26,33 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+    vector<int> v(n);
+    inp(v);
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> d(n);
 
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    for(int i = 0; i < n; i++){
+        d[i] = v[i] - i;
     }
 
+    set<int> st(all(d));
+
+
+    int ans = 1;
+
+    while(st.size()){
+        int sz = 1;
+        auto it = st.begin();
+        int x = *it;
+        st.erase(it);
+        while(st.size() && *st.begin() == x+1){
+            x++;
+            sz++;
+            st.erase(st.begin());
+        }
+        
+        ans = max(ans,sz);
+    }
 
     cout << ans << nl;
 }

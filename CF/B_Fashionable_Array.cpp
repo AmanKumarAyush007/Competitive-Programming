@@ -24,27 +24,50 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n; cin >> n;
+    vector<int> v(n);
+    inp(v)
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    map<int,int> mp;
+    for(auto &i : v) mp[i]++;
 
-    int ans = 0;
+    vector<int> ans;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+
+    while(mp.size()){
+        int lmt = inf;
+        
+        vector<int> temp;
+        for(auto &[a,b] : mp){
+            lmt = min(b,lmt);
+            temp.pb(a);
+        }
+
+        sort(rall(temp));
+
+        for(int i = 0; i < lmt; i++){
+            for(auto &ele : temp) ans.pb(ele);
+        }
+
+        // debug(mp);
+        // debug(temp, lmt);
+
+        vector<int> trp;
+        
+        for(auto &[a,b] : mp){
+            mp[a] -= lmt;
+            if(mp[a] == 0) trp.pb(a);
+        }
+
+        for(auto &i : trp) mp.erase(i);
+
+        // debug(mp);
+        // debug(temp, lmt);
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
 
 
-    cout << ans << nl;
+    for(auto &i : ans) cout << i << " ";
+    cout << nl;
 }
 
 signed main(){

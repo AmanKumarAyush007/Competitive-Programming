@@ -22,29 +22,51 @@ using namespace std;
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
+int n,m;
+vector<int> ans,par,a,depth;
+vector<vector<int>> adj;
+
+void dfs(int x = 1, int d = 0){
+    depth[x] = d;
+    for(auto &child : adj[x]){
+        if(child != par[x]){
+            dfs(child,d+1);
+        }
+    }
+}
 
 void solve(){
-    int n;
     cin >> n;
-
-    vector<int> a(n), b(n);
+    par.resize(n+1);
+    depth.resize(n+1);
+    adj.assign(n+1,{});
+    for(int i = 2; i <= n; i++){
+        cin >> par[i];
+        adj[i].pb(par[i]);
+        adj[par[i]].pb(i);
+    }
+    cin >> m;
+    a.resize(m);
     inp(a);
-    inp(b); 
 
-    int ans = 0;
+    ans.clear();   
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    dfs();
+
+    vector<pair<int,int>> vp;
+
+    for(auto &i : a){
+        vp.pb({depth[i],i});
     }
 
+    sort(all(vp));
 
-    cout << ans << nl;
+    cout << m-1 << " ";
+    for(int i = 1; i < vp.size(); i++){
+        cout << vp[i].ss << " ";
+    }
+
+    cout << nl;
 }
 
 signed main(){

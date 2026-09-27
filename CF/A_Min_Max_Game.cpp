@@ -27,24 +27,15 @@ void solve(){
     int n;
     cin >> n;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> v(n);
+    inp(v);
 
-    int ans = 0;
+    int cnt = count(all(v),1);
+    int x = n - cnt;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
-
-
-    cout << ans << nl;
+    if(cnt >= x) cout << "Bessie";
+    else cout << "Elsie";
+    cout << nl;
 }
 
 signed main(){

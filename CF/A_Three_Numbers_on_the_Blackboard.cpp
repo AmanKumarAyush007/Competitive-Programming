@@ -24,27 +24,11 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
-
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
-
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
-
-
-    cout << ans << nl;
+    vector<int> v(3);
+    for(auto &i : v) cin >> i;
+    sort(all(v));
+    cout << min({v[2]-v[0], v[2], v[1]});
+    cout << nl;
 }
 
 signed main(){

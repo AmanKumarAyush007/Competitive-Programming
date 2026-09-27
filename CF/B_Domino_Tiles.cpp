@@ -23,28 +23,43 @@ using namespace std;
 
 
 
-void solve(){
+void solve() {
     int n;
     cin >> n;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    string s;
+    cin >> s;
+
+    vector<string> can = {"00", "10", "11", "01"};
 
     int ans = 0;
+    for(auto &st : can){
+        bool ck = 1;
+        for(int i = 0; i < min((int)st.size(), n); i++){
+            if(s[i] == st[i] || s[i] == '?') continue;
+            ck = 0;
+            break;
+        }
+        
+        if(ck){
+            if(s.size() > 2){
+                auto t = st;
+                
+                for(int i = 2; i < s.size(); i++){
+                    if(t[i-2] == s[i]) {
+                        ck = 0;
+                        break;
+                    }
+                    t += '0' + (t[i-2] == '0');
+                }
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+                if(ck) ans++;
+            }
+            else ans++;
+        }
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
 
-
-    cout << ans << nl;
+    cout << ans << '\n';
 }
 
 signed main(){

@@ -27,24 +27,40 @@ void solve(){
     int n;
     cin >> n;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> v(n);
+    inp(v);
 
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    vector<int> d(n);
+    for(int i = 1; i < n; i++){
+        d[i] = v[i] - v[i-1]; 
     }
 
 
-    cout << ans << nl;
+    int i = 1, j = 1;
+
+    while(i < n){
+
+        bool k = 0;
+        while(j+1 < n && (d[j]&1) == (d[j+1]&1)) {
+            j++;
+            k = 1;
+        }
+
+        if(k) sort(d.begin() + i, d.begin() + j+1);
+
+        if(!k) j++;
+
+        i = j;
+    }
+
+
+    for(int i = 1; i < n; i++){
+        v[i] = v[i-1] + d[i];
+    }
+
+
+    for(auto &i : v) cout << i << " ";
+    cout << nl;
 }
 
 signed main(){

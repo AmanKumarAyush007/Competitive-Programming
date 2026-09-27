@@ -27,24 +27,56 @@ void solve(){
     int n;
     cin >> n;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> v(n);
+    inp(v);
 
-    int ans = 0;
+    multiset<int> po,ne;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    for(auto &i : v) {
+        if(i < 0) ne.insert(i);
+        else po.insert(i);
     }
 
 
-    cout << ans << nl;
+    if(po.size() == 0 || *prev(po.end()) == 0){
+        cout << -1 << nl;
+        return;
+    }
+
+    vector<int> ans;
+
+    auto it = po.begin();
+
+    while(*it == 0) it = next(it);
+
+    ans.pb(*it);
+    po.erase(it);
+
+
+    while(true){
+        if(po.size() == 0 && ne.size() == 0){
+            break;
+        }
+        auto ubnd = ne.upper_bound(-ans.back());
+        if(ubnd != ne.end()){
+            ans.pb(ans.back() + *ubnd);
+            ne.erase(ubnd);
+        }
+        else{
+            if(po.size()) {
+                ans.pb(ans.back() + *po.begin());
+                po.erase(po.begin());
+            }
+            else {
+                cout << -1 << nl;
+                return;
+            }
+        }
+    }
+
+
+    for(auto &i : ans) cout << i << " ";
+    cout << nl;
 }
 
 signed main(){

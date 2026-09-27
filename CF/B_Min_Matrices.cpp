@@ -24,27 +24,46 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n,k;
+    cin >> n >> k;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    if(k < n || k == 2*n) cout << -1 << nl;
+    else {
+        vector<vector<int>> mat(n, vector<int>(n,-1));
 
-    int ans = 0;
+        int x = 1;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+        for(auto &row : mat) row[0] = x++;
+
+        for(int i = 1; i < n; i++){
+            if(x > k) break;
+            mat[0][i] = x++;
+        }
+
+        for(int j = 0; j < n; j++){
+            for(int i = 0; i < n; i++){
+                if(mat[i][j] == -1) mat[i][j] = x++;
+            }
+        }
+        
+        for(int j = 0; j < n; j++){
+            int mn = 1e9;
+            for(int i = 0; i < n; i++){
+                mn = min(mn, mat[i][j]);
+            }
+            // debug(mn);
+            if(mn > k) swap(mat[j][0], mat[j][j]);
+        }
+        
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                cout << mat[i][j] << " ";
+            }
+            cout << nl;
+        }
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
 
-
-    cout << ans << nl;
 }
 
 signed main(){

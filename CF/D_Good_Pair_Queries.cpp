@@ -24,27 +24,43 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n,q;
+    cin >> n >> q;
+    string s,t;
+    cin >> s >> t;
+    vector<int> a(n),b(n),c(n), d(n);
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
-
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    for(int i = 0; i < n; i++){
+        if(s[i] == t[i]){
+            if(s[i] == '0') a[i]++;
+            else b[i]++;
+        }
+        else{
+            if(s[i] == '0') c[i]++;
+            else d[i]++;    
+        }
     }
 
+    prefixsum(a);
+    prefixsum(b);
+    prefixsum(c);
+    prefixsum(d);
 
-    cout << ans << nl;
+    
+    while(q--){
+        int l,r;
+        cin >> l >> r;
+        l--, r--;
+
+        auto calc = [&](vector<int> &v){
+            return v[r] - (l > 0 ? v[l-1] : 0);
+        };
+
+        
+        if(abs(calc(c) - calc(d)) == 0) cout << "YES\n";
+        else if(abs(calc(c) - calc(d)) <= calc(a) + calc(b)) cout << "YES\n";
+        else cout << "NO\n";
+    }
 }
 
 signed main(){

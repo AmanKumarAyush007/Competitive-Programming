@@ -24,27 +24,26 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int x,y;
+    cin >> x >> y;
+    int mx = x+y;
+    int op = x;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    if((x&y) == 0) op = 0;
 
-    int ans = 0;
+    for(int i = 0; i <= 32; i++){
+        if((1LL << i) < y) continue;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+        int diff = (1LL << i) - y;
+
+        if(x - diff <= 0) break;
+
+        if(((x-diff) & (1LL << i)) == 0) {
+            op = min(op, diff);
+        }
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
-
-
-    cout << ans << nl;
+    
+    cout << mx <<  " " << op << nl;
 }
 
 signed main(){

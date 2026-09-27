@@ -11,7 +11,7 @@ using namespace std;
 #define ss               second
 #define pb               push_back
 #define inf              (int)1e18
-#define nl               '\n'
+#define nl               endl
 #define all(a)           (a).begin(),(a).end()
 #define rall(a)          (a).rbegin(),(a).rend()
 #define sm(v)            accumulate(all(v),0LL)
@@ -22,29 +22,37 @@ using namespace std;
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
+int ask(int i, int j){
+    cout << "? " << i << " " << j << nl;
+    int res;
+    cin >> res;
+    return res;
+}
+
 
 void solve(){
     int n;
     cin >> n;
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
-
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+    for(int i = 3; i <= 2*n; i += 2){
+        if(ask(i,i+1)){
+            cout << "! " << i << nl;
+            return;
+        }
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    
+    
+    if(ask(1,3)){
+        cout << "! " << 1 << nl;
+        return;
     }
-
-
-    cout << ans << nl;
+    if(ask(1,4)){
+        cout << "! " << 1 << nl;
+        return;
+    }
+    
+    
+    cout << "! " << 2 << nl;
 }
 
 signed main(){

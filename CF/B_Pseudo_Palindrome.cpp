@@ -24,27 +24,41 @@ using namespace std;
 
 
 void solve(){
-    int n;
-    cin >> n;
+    int n,d;
+    cin >> n >> d;
+    vector<int> v(n);
+    inp(v);
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    if(n == 1){
+        cout << "YES\n";
+        return;
+    }
+
+    multiset<int> ms(all(v));
 
     int ans = 0;
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    while(ms.size() > 1){
+        auto it = ms.begin();
+        auto nxt = next(it);
+        
+        auto lst = prev(ms.end());
+        auto scn = prev(lst);
+
+        if(abs(*it - *nxt) <= abs(*lst - *scn)){
+            ans = max(ans, abs(*it - *nxt));
+            ms.erase(it);
+            ms.erase(nxt);
+        }
+        else{
+            ans = max(ans, abs(*lst - *scn));
+            ms.erase(lst);
+            ms.erase(scn);
+        }
     }
 
-
-    cout << ans << nl;
+    cout << (d >= ans ? "YES" : "NO");
+    cout << nl;
 }
 
 signed main(){

@@ -18,7 +18,7 @@ using namespace std;
 #define inp(v)           for(auto& x : v) cin >> x;
 #define setbit(x)        __builtin_popcountll(x)
 #define lg(x)            (63 - __builtin_clzll(x)) //log base 2
-#define prefixsum(a)     partial_sum(all(a), (a).begin());
+#define prefixsum(a)    s[i] == '?' partial_sum(all(a), (a).begin());
 #define suffixsum(a)     partial_sum(rall(a), (a).rbegin());
 
 
@@ -26,25 +26,19 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+    vector<int> v(n);
+    inp(v);
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    int a,b,c;
+    a = b = c = 0;
 
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+    for(auto &i : v){
+        if(i&1) a++;
+        else if(i%4) b++;
+        else c++;
     }
 
-
-    cout << ans << nl;
+    cout << max({a,b,c}) << nl;
 }
 
 signed main(){

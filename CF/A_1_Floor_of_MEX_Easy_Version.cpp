@@ -26,25 +26,34 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+    vector<int> v(n);
+    inp(v);
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> diff(n+1);
 
-    int ans = 0;
+    for(int i = 0; i < n; i++){
+        int st = v[i] * (i+1);
+        int en = (v[i] + 1) * (i+1);
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
-    }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
+        if(st <= n) diff[st]++;
+        if(en <= n)diff[en]--;
+
     }
 
 
-    cout << ans << nl;
+    prefixsum(diff);
+
+
+    vector<int> ans;
+
+    for(int i = 0; i < n; i++){
+        if(!diff[i]) ans.pb(i);
+    }
+
+
+    cout << ans.size() << nl;
+    for(auto &i : ans) cout << i << " ";
+    cout << nl;
 }
 
 signed main(){

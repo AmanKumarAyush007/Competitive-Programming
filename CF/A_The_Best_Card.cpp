@@ -26,25 +26,13 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
-
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
-
-    int ans = 0;
-
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+    for(int i = 2; i <= n; i++){
+        if((n+1) % i == 0){
+            cout << "NO\n";
+            return;
+        } 
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
-
-
-    cout << ans << nl;
+    cout << "YES" << nl;
 }
 
 signed main(){

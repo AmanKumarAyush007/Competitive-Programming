@@ -26,25 +26,34 @@ using namespace std;
 void solve(){
     int n;
     cin >> n;
+    vector<int> v(n);
+    inp(v);
 
-    vector<int> a(n), b(n);
-    inp(a);
-    inp(b); 
+    vector<int> ord(n);
+    iota(all(ord), 0);
 
-    int ans = 0;
+    sort(all(ord), [&](const int x, const int y){
+        return v[x] < v[y];
+    });
 
-    for(int i = 1; i < n-1; i++){
-        int l = lcm(gcd(a[i-1],a[i]),gcd(a[i+1],a[i]));
-        if(l < a[i]) ans++;
+    int l = 0, r = n-1;
+
+    bool ck = 1;
+    for(auto &i : ord){
+        if(l%2 == i%2){
+            l++;
+            continue;
+        }
+        if(r%2 == i%2){
+            r--;
+            continue;
+        }
+        
+        ck = 0;
+        break;
     }
- 
-    if(n >= 2){
-        if(a[0] > gcd(a[0], a[1])) ans++;
-        if(a[n-1] > gcd(a[n-1],a[n-2])) ans++;
-    }
 
-
-    cout << ans << nl;
+    cout << (ck ? "YES" : "NO") << nl;
 }
 
 signed main(){
